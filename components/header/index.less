@@ -1,0 +1,36 @@
+@headerHeight:64px;
+.header{
+    width: 1024px;
+    height: @headerHeight;
+    line-height: @headerHeight;
+    margin: 0 auto;
+    &__menu{
+        overflow: hidden;
+    }
+    &__user{
+        float: right;
+        // color: #fff;
+    }
+    &__menu-item{
+        display: inline-block;
+        height: @headerHeight;
+        line-height: @headerHeight;
+        font-size: 14px;
+        color: #fff;
+        padding: 0 20px;
+        a{
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+    }
+    &__menu-item--active,
+    &__menu-item:hover{
+        background: #fff;
+        cursor: pointer;
+        color: #333;
+        a{
+            color: #333;
+        }
+    }
+}

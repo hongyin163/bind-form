@@ -1,0 +1,22 @@
+.loading-page{
+    position: fixed;
+    top:0;
+    left:0;
+    right: 0;      
+    height: 2px;
+    &__progress{
+        width: 50%;
+        height: 2px;
+        background: #148FE8;
+        animation: anim-loading 2s 1;
+    }
+}
+
+@keyframes anim-loading{
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 90%;
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "biz-ui",
+  "version": "1.0.0",
+  "description": "B端系统组件库",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://igit.58corp.com/chinahr-fe/biz-ui.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
