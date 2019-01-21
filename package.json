@@ -1,15 +1,15 @@
 {
-  "name": "biz-ui",
+  "name": "chrb-ui",
   "version": "1.0.0",
   "description": "B端系统组件库",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "http://igit.58corp.com/chinahr-fe/biz-ui.git"
-  },
+  "repository": {},
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^3.8.5"
+  }
 }
