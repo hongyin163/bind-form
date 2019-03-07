@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import './index.less';
 
-export default function Loading({ error, pastDelay = 1 }) {
+export default function Loading(error:any,pastDelay=1) {
     if (error) {
         return (
             <div>
