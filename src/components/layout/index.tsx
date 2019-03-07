@@ -1,17 +1,23 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import { Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
 import './index.less';
 
-class MainLayout extends Component {
-    state = {}
+const initialState = {count:0};
+type State = Readonly<typeof initialState>;
+
+class AtsLayout extends Component<any,State> {
+    readonly state:State = initialState;
+    
     render() {
         let me = this;
+        console.log(this.state.count);
         let {
             children,
             className,
-            renderHeader = () => null,
-            renderBreadCrumb = () => null,
+            renderHeader,
+            renderBreadCrumb,
             footerVisible = true
         } = me.props;
         return (
@@ -31,4 +37,3 @@ class MainLayout extends Component {
     }
 }
 
-export default MainLayout;

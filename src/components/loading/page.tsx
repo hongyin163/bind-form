@@ -5,7 +5,7 @@ export default function Loading(error:any,pastDelay=1) {
     if (error) {
         return (
             <div>
-                Error!
+                Error!111
                 <p>
                     {error.message}
                 </p>
