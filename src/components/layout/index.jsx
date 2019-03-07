@@ -1,34 +1,46 @@
 import React, { Component } from 'react';
-import { Layout } from 'antd';
-const { Header, Content, Footer } = Layout;
-import './index.less';
 
-class MainLayout extends Component {
-    state = {}
-    render() {
-        let me = this;
-        let {
-            children,
-            className,
-            renderHeader = () => null,
-            renderBreadCrumb = () => null,
-            footerVisible = true
-        } = me.props;
-        return (
-            <Layout className={`layout ${className}`}>
-                <Header>
-                    {renderHeader()}
-                </Header>
-                <Content className="layout__content">
-                    {renderBreadCrumb()}
+function generator({ prefixCls }) {
+    return class Basic extends Component {
+        render() {
+            let {
+                className,
+                children,
+                ...rest
+            } = this.props;
+            return (
+                <div className={`${className} ${prefixCls}`} {...rest}>
                     {children}
-                </Content>
-                <Footer style={{ textAlign: 'center',display:footerVisible?'block':'none' }}>
-                    Copyright © 五八同城信息技术有限公司 版权所有
-                </Footer>
-            </Layout>
-        );
-    }
+                </div>
+            );
+        }
+    };
 }
 
-export default MainLayout;
+const Header = generator({
+    prefixCls: 'biz-layout_header'
+});
+
+const Footer = generator({
+    prefixCls: 'biz-layout_footer'
+});
+
+const Content = generator({
+    prefixCls: 'biz-layout_content'
+});
+
+const Side = generator({
+    prefixCls: 'biz-layout_side'
+});
+
+
+const Layout = generator({
+    prefixCls: 'biz-layout'
+});
+
+Layout.Header = Header;
+Layout.Footer = Footer;
+Layout.Content = Content;
+Layout.Side = Side;
+
+export default Layout;
