@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './index.less';
+// import './index.less';
 
 export default function Loading(error:any,pastDelay=1) {
     if (error) {
