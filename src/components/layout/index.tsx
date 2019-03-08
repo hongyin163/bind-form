@@ -5,19 +5,19 @@ interface BasicProps {
 }
 
 function generator({ prefixCls }) {
-    return class Basic extends Component<BasicProps> {
+    return class Basic extends Component<any> {
         static Header: typeof Basic;
         static Footer: typeof Basic;
         static Content: typeof Basic;
         static Side: typeof Basic;
         render() {
             let {
-                className,
+                className = '',
                 children,
                 ...rest
             } = this.props;
             return (
-                <div className={`${className} ${prefixCls}`} {...rest}>
+                <div className={`${prefixCls} ${className}`} {...rest}>
                     {children}
                 </div>
             );
@@ -40,8 +40,6 @@ const Content = generator({
 const Side = generator({
     prefixCls: 'biz-layout_side'
 });
-
-
 
 const Layout = generator({
     prefixCls: 'biz-layout'
