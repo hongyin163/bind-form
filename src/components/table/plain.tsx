@@ -38,11 +38,6 @@ class Table<T> extends Component<TableProps<T>, any> {
         } = me.props;
         return (
             <div className="biz-table">
-                <div className="biz-table_content">
-                    <div className="biz-table_scroll"></div>
-                    <div className="biz-table_fixed-left"></div>
-                    <div className="biz-table_fixed-right"></div>
-                </div>
                 <table>
                     <thead>
                         <tr>
