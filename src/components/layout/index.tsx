@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 
 function generator({ prefixCls }) {
-    return class Basic extends Component {
+    return class Basic extends Component<any> {
+        static Header: typeof Basic;
+        static Footer: typeof Basic;
+        static Content: typeof Basic;
+        static Side: typeof Basic;
         render() {
             let {
                 className,
@@ -32,7 +36,6 @@ const Content = generator({
 const Side = generator({
     prefixCls: 'biz-layout_side'
 });
-
 
 const Layout = generator({
     prefixCls: 'biz-layout'
