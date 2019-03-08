@@ -11,7 +11,6 @@ class Table<T> extends Component<TableProps<T>, any> {
                 </th>
             )
         })
-        return '';
     }
     renderBody = (columns: Array<ColumnProps<T>>, dataSource: Array<T>) => {
         return dataSource.map((item, i) => {
