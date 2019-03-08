@@ -1,9 +1,14 @@
+@import '../index';
 .biz-layout {
+    .flex-column;
     &_header {}
     &_content {
-        overflow: hidden;
+        flex: auto;
     }
     &_side{
         
     }
+}
+.biz-layout-has-sider{
+    flex-direction: row;
 }

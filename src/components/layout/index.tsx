@@ -12,12 +12,12 @@ function generator({ prefixCls }) {
         static Side: typeof Basic;
         render() {
             let {
-                className,
+                className = '',
                 children,
                 ...rest
             } = this.props;
             return (
-                <div className={`${className} ${prefixCls}`} {...rest}>
+                <div className={`${prefixCls} ${className}`} {...rest}>
                     {children}
                 </div>
             );
