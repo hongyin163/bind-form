@@ -25,18 +25,9 @@ import './src/components/loading/style/index.less';
 import Form from './src/components/form';
 import './src/components/form/style/index.less';
 
-import Select from './src/components/select';
+import Select from './src/components/select/select';
 import './src/style/select/index.less';
 
+import Option from './src//components/select/option';
 
-export {
-    Layout,
-    Loading,
-    LoadingPage,
-    Input,
-    Checkbox,
-    Radio,
-    Table,
-    Select,
-    Form
-};
+export { Layout, Loading, LoadingPage, Input, Checkbox, Radio, Table, Select, Form, Option };
