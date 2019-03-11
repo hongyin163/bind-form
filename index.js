@@ -9,8 +9,12 @@ import './src/style/layout/index.less';
 import Input from './src/components/input';
 import './src/style/input/index.less';
 
+import Button from './src/components/button';
+import './src/style/button/index.less';
+
 export {
     Layout,
     LoadingPage,
-    Input
+    Input,
+    Button
 };
