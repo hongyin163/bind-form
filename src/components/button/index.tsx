@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
-import './index.less';
 import classNames from 'classnames';
 
 /**
  * type ['primary','minor','danger']
  */
-class atsButton extends Component{
+const ButtonTypes = ['primary','minor','danger'];
+
+export type ButtonType = (typeof ButtonTypes)[number];
+
+export interface BaseButtonProps {
+    name:string,
+    type?: ButtonType;
+    className?: string;
+    children?: React.ReactNode;
+    success?:()=>void,
+    disabled?:boolean,
+    cStyle?:{}
+  }
+  
+class Button extends Component<BaseButtonProps,any>{
     handleClick = ()=>{
         let {
             success
@@ -25,7 +38,7 @@ class atsButton extends Component{
         return (
             <button 
                 disabled={disabled} 
-                className={classNames('ats-btn',type?`ats-btn__${type}`:'',className)}  
+                className={classNames('ats-btn',{[`ats-btn__${type}`]:type},className)}  
                 style={cStyle} 
                 onClick={this.handleClick}
             >
@@ -35,4 +48,4 @@ class atsButton extends Component{
     }
 }
 
-export default atsButton;
+export default Button;
