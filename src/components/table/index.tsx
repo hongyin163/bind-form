@@ -3,18 +3,31 @@ import { TableProps, ColumnProps } from './interface';
 
 class Table<T> extends Component<TableProps<T>, any> {
     state = {}
+    renderSortTitle = (col: ColumnProps<T>) => {
+        if (typeof col.sortOrder === 'undefined') {
+            return ''
+        }
+        return (
+            <span>
+                <i className={`biz-icon ${col.sortOrder}`}></i>
+            </span>
+        )
+    }
     renderHeader = (columns: Array<ColumnProps<T>>) => {
         return columns.map((col) => {
             return (
                 <th key={col.key} align={col.align || 'center'} colSpan={col.colSpan || 1}>
-                    {col.title}
+                    <span>
+                        {col.title}
+                    </span>
+                    {this.renderSortTitle(col)}
                 </th>
             )
         })
     }
     renderBody = (columns: Array<ColumnProps<T>>, dataSource: Array<T>) => {
         return dataSource.map((item, i) => {
-            let tds = columns.map((col, j) => {
+            const tds = columns.map((col, j) => {
                 return (
                     <td key={col.dataIndex}>
                         {col.dataIndex && item[col.dataIndex]}
@@ -27,31 +40,32 @@ class Table<T> extends Component<TableProps<T>, any> {
             )
         })
     }
-    renderFixedTable(){}
-    renderTable(){}
+    renderFixedTable() { }
+    renderTable() { }
     render() {
-        let me = this;
-        let {
+        const me = this;
+        const {
             columns,
-            dataSource
+            dataSource,
         } = me.props;
         return (
             <div className="biz-table">
                 <div className="biz-table_content">
-                    <div className="biz-table_scroll"></div>
+                    <div className="biz-table_scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    {me.renderHeader(columns)}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {me.renderBody(columns, dataSource)}
+                            </tbody>
+                        </table>
+                    </div>
                     <div className="biz-table_fixed-left"></div>
                     <div className="biz-table_fixed-right"></div>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            {me.renderHeader(columns)}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {me.renderBody(columns, dataSource)}
-                    </tbody>
-                </table>
             </div>
         );
     }

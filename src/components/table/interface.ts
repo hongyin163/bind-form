@@ -28,6 +28,7 @@ export interface ColumnProps<T> {
     fixed?: boolean | ('left' | 'right');
     filterIcon?: React.ReactNode | ((filtered: boolean) => React.ReactNode);
     filteredValue?: any[];
+    sortOrder?: SortOrder;
     children?: ColumnProps<T>[];
     onCellClick?: (record: T, event: any) => void;
     onCell?: (record: T, rowIndex: number) => any;
