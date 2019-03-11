@@ -3,9 +3,9 @@ import classnames from 'classnames';
 
 interface CheckboxProps {
     checked?: boolean,
-    onChange: Function,
+    onChange?: Function,
     disabled?: boolean,
-    className: string
+    className?: string
 }
 
 class Radio extends Component<CheckboxProps, any> {

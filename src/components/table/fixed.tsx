@@ -27,31 +27,48 @@ class Table<T> extends Component<TableProps<T>, any> {
             )
         })
     }
-    renderFixedTable(){}
-    renderTable(){}
-    render() {
+    renderFixedTable() { }
+    renderTable() {
         let me = this;
         let {
             columns,
             dataSource
         } = me.props;
         return (
+            <table>
+                <thead>
+                    <tr>
+                        {me.renderHeader(columns)}
+                    </tr>
+                </thead>
+                <tbody>
+                    {me.renderBody(columns, dataSource)}
+                </tbody>
+            </table>
+        )
+    }
+    isFixed() {
+        let me = this;
+        let {
+            columns,
+            dataSource
+        } = me.props;
+        return columns.some((col) => col.fixed == true);
+    }
+    render() {
+        let me = this;
+        return (
             <div className="biz-table">
                 <div className="biz-table_content">
-                    <div className="biz-table_scroll"></div>
-                    <div className="biz-table_fixed-left"></div>
-                    <div className="biz-table_fixed-right"></div>
+                    <div className="biz-table_scroll">
+                        {me.renderTable()}
+                    </div>
+                    <div className="biz-table_fixed-left">
+                    </div>
+                    <div className="biz-table_fixed-right">
+                    </div>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            {me.renderHeader(columns)}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {me.renderBody(columns, dataSource)}
-                    </tbody>
-                </table>
+
             </div>
         );
     }

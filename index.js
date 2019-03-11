@@ -9,12 +9,25 @@ import './src/style/layout/index.less';
 import Input from './src/components/input';
 import './src/style/input/index.less';
 
-import Button from './src/components/button';
-import './src/style/button/index.less';
+import Checkbox from './src/components/checkbox';
+import './src/style/checkbox/index.less';
+
+import Radio from './src/components/radio';
+import './src/style/radio/index.less';
+
+import Table from './src/components/table';
+import './src/components/table/style/index.less';
+
+import Loading from './src/components/loading';
+import './src/style/loading/index.less';
+
 
 export {
     Layout,
+    Loading,
     LoadingPage,
     Input,
-    Button
+    Checkbox,
+    Radio,
+    Table
 };

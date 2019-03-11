@@ -3,9 +3,9 @@ import classnames from 'classnames';
 
 interface CheckboxProps {
     checked?: boolean,
-    onChange: Function,
+    onChange?: Function,
     disabled?: boolean,
-    className: string
+    className?: string
 }
 
 class Checkbox extends Component<CheckboxProps, any> {
@@ -24,6 +24,7 @@ class Checkbox extends Component<CheckboxProps, any> {
             checked,
             disabled,
             className,
+            ...rest
         } = this.props;
         let cls = classnames({
             'biz-checkbox': true,
@@ -33,6 +34,7 @@ class Checkbox extends Component<CheckboxProps, any> {
         })
         return (
             <div className={cls} onClick={me.onCheck}>
+                
             </div >
         );
     }
