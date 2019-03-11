@@ -29,7 +29,7 @@
 
   .biz-selected {
     .biz-select-arrow-icon {
-      transform: rotateZ(180deg);
+      transform: rotateZ(-180deg);
     }
   }
 
@@ -47,13 +47,15 @@
     text-overflow: ellipsis;
   }
   &-arrow {
-    display: inline-block;
+    display: block;
+    float: right;
   }
   &-arrow-icon {
     display: inline-block;
     width: 8px;
-    height: 5px;
+    height: 8px;
     background: url('../image/down.png') no-repeat center center;
     background-size: 100%;
+    transition: all 0.3s ease;
   }
 }
