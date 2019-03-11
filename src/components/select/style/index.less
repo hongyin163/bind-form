@@ -1,26 +1,29 @@
 .biz-select {
-  width: 150px;
-  box-sizing: border-box;
-  vertical-align: middle;
-  margin: 0;
-  padding: 0;
-  color: #666666;
-  font-variant: tabular-nums;
-  line-height: 1.5;
-  list-style: none;
-  font-feature-settings: 'tnum';
   position: relative;
   display: inline-block;
+  box-sizing: border-box;
+
+  width: 150px;
+  margin: 0;
+  padding: 0;
+
+  color: #666;
+  font-size: 12px;
+  font-family: PingFangSC-Regular;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+
+  vertical-align: middle;
+  list-style: none;
+  font-feature-settings: 'tnum';
   outline: 0;
   cursor: pointer;
-  font-family: PingFangSC-Regular;
-  font-size: 12px;
 
   &-selection {
-    height: 30px;
     box-sizing: border-box;
+    height: 30px;
     background-color: #fff;
-    border-top-width: 1.02px;
+    border: 1px solid rgba(255, 255, 255, 0);
     border-radius: 4px;
     outline: none;
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -28,6 +31,7 @@
   }
 
   .biz-selected {
+    border: 1px solid #40a9ff;
     .biz-select-arrow-icon {
       transform: rotateZ(-180deg);
     }
