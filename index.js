@@ -21,6 +21,9 @@ import './src/components/table/style/index.less';
 import Loading from './src/components/loading';
 import './src/style/loading/index.less';
 
+import Select from './src/components/select';
+import './src/style/select/index.less';
+
 
 export {
     Layout,
@@ -29,5 +32,6 @@ export {
     Input,
     Checkbox,
     Radio,
-    Table
+    Table,
+    Select
 };

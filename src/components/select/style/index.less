@@ -1,0 +1,55 @@
+.biz-select{
+    width: 150px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    color: #666666;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    font-feature-settings: 'tnum';
+    position: relative;
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    &-selection{
+        height: 30px;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-top-width: 1.02px;
+        border-radius: 4px;
+        outline: none;
+        transition: all .3s cubic-bezier(.645, .045, .355, 1);
+        user-select: none;
+    }
+    .biz-selected{
+        .biz-select-arrow-icon{
+            transform: rotateZ(180deg);
+        }
+    }
+    &-selection_rendered{
+        margin: 0 11px;
+        line-height: 28px;
+    }
+    &-selection-selected-value{
+        float: left;
+        max-width: 92%;
+        padding-right: 5px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    &-arrow{
+        display: inline-block;
+    }
+    &-arrow-icon{
+        display: inline-block;
+        width: 8px;
+        height: 5px;
+        background: url('../image/down.png') no-repeat center center;
+        background-size: 100%;
+    }
+}
