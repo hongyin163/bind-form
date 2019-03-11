@@ -1,3 +1,5 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
 .loading-page{
     position: fixed;
     top:0;
@@ -7,7 +9,7 @@
     &__progress{
         width: 50%;
         height: 2px;
-        background: #148FE8;
+        background: @primary-color;
         animation: anim-loading 2s 1;
     }
 }
