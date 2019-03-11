@@ -1,4 +1,4 @@
-.biz-select{
+.biz-select {
     width: 150px;
     box-sizing: border-box;
     vertical-align: middle;
@@ -15,7 +15,8 @@
     cursor: pointer;
     font-family: PingFangSC-Regular;
     font-size: 12px;
-    &-selection{
+
+    &-selection {
         height: 30px;
         box-sizing: border-box;
         background-color: #fff;
@@ -25,27 +26,32 @@
         transition: all .3s cubic-bezier(.645, .045, .355, 1);
         user-select: none;
     }
-    .biz-selected{
-        .biz-select-arrow-icon{
+
+    .biz-selected {
+        .biz-select-arrow-icon {
             transform: rotateZ(180deg);
         }
     }
-    &-selection_rendered{
+
+    &-selection_rendered {
         margin: 0 11px;
         line-height: 28px;
     }
-    &-selection-selected-value{
+
+    &-selection-selected-value {
         float: left;
         max-width: 92%;
         padding-right: 5px;
-        overflow: hidden;
+overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-    &-arrow{
+
+    &-arrow {
         display: inline-block;
     }
-    &-arrow-icon{
+
+    &-arrow-icon {
         display: inline-block;
         width: 8px;
         height: 5px;
