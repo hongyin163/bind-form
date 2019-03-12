@@ -12,7 +12,7 @@ const VALUE_PROP_NAME = {
         'checkbox': 'checked',
         'radio': 'checked',
     },
-    'select': 'value'
+    'select': 'value',
 }
 interface BizForm {
     validateFields?: Function
@@ -33,18 +33,18 @@ class Form extends Component<FormProps, any> implements BizForm {
             formData: {
                 validate: {
                     isValidate: false,
-                    errors: {}
+                    errors: {},
                 },
-                value
-            }
+                value,
+            },
         }
     }
     validateFields = (cb) => {
-        let me = this;
-        let {
+        const me = this;
+        const {
             formData: {
-                value
-            }
+                value,
+            },
         } = me.state;
 
         const allRules = this.rules;
@@ -59,7 +59,7 @@ class Form extends Component<FormProps, any> implements BizForm {
     updateValidate(errors: Array<any> = [], cb?) {
         return this.setState((state) => {
 
-            let formData = state.formData;
+            const formData = state.formData;
             let isValidate = false;
             let nextError;
             if (!errors || errors.length == 0) {
@@ -68,21 +68,21 @@ class Form extends Component<FormProps, any> implements BizForm {
             } else {
                 nextError = errors.reduce((pre, item) => {
                     return Object.assign(pre, {
-                        [item.field]: item.message
+                        [item.field]: item.message,
                     })
                 }, {});
             }
             state.formData = Object.assign({}, formData, {
                 validate: {
                     isValidate,
-                    errors: nextError
-                }
+                    errors: nextError,
+                },
             })
             return state;
         }, cb);
     }
     validateFieldsAndScroll(cb?) {
-        let me = this;
+        const me = this;
         me.validateFields((errors, values) => {
             if (errors) {
 
@@ -91,11 +91,11 @@ class Form extends Component<FormProps, any> implements BizForm {
     }
     updateValue(name, value, cb) {
         return this.setState((state) => {
-            let formData = state.formData;
-            let val = formData.value;
+            const formData = state.formData;
+            const val = formData.value;
             val[name] = value;
             state.formData = Object.assign({}, formData, {
-                value: val
+                value: val,
             })
             return state;
         }, cb);
@@ -115,39 +115,39 @@ class Form extends Component<FormProps, any> implements BizForm {
     updateValidateByNme = (name, errors: Array<any>) => {
 
         return this.setState((state) => {
-            let validate = state.formData.validate;
-            let isValidate = validate.isValidate;
-            let preError = validate.errors;
+            const validate = state.formData.validate;
+            const isValidate = validate.isValidate;
+            const preError = validate.errors;
             let errMsg = '';
             if (!errors || errors.length == 0) {
                 errMsg = '';
             } else {
                 errMsg = errors.filter(p => p.field == name).map(p => p.message).join('');
             }
-            let nextError = Object.assign(preError, {
-                [name]: errMsg
+            const nextError = Object.assign(preError, {
+                [name]: errMsg,
             });
             // console.log(nextError);
             state.formData = Object.assign({}, state.formData, {
                 validate: {
                     isValidate,
-                    errors: nextError
-                }
+                    errors: nextError,
+                },
             })
             return state;
         });
     }
     validateFieldByName = (name, value, cb?) => {
-        let me = this;
+        const me = this;
         const allRules = this.rules;
         let rule = allRules;
         if (name) {
             rule = {
-                [name]: allRules[name]
+                [name]: allRules[name],
             }
         }
-        let vals = {
-            [name]: value
+        const vals = {
+            [name]: value,
         }
         const validator = new AsyncValidator(rule);
         validator.validate(vals, { first: true }, (errors) => {
@@ -170,21 +170,21 @@ class Form extends Component<FormProps, any> implements BizForm {
         debugger;
         me.updateValue(fieldName, value, () => {
             onFieldChange(e);
-            let allValues = me.state.formData.value;
+            const allValues = me.state.formData.value;
             onFormChange(allValues);
             me.validateFieldByName(fieldName, allValues[fieldName])
         })
     }
     getValuePropName(control) {
         let {
-            valuePropName = 'value'
+            valuePropName = 'value',
         } = control.props;
         if (typeof control.type == 'string') {
-            let ctrlTypes = VALUE_PROP_NAME[control.type];
+            const ctrlTypes = VALUE_PROP_NAME[control.type];
             if (ctrlTypes) {
                 if (typeof ctrlTypes == "object") {
-                    if (control.props['type']) {
-                        valuePropName = ctrlTypes[control.props['type']] || 'value';
+                    if (control.props.type) {
+                        valuePropName = ctrlTypes[control.props.type] || 'value';
                     } else {
                         valuePropName = 'value';
                     }
@@ -228,9 +228,9 @@ class Form extends Component<FormProps, any> implements BizForm {
     }
     render() {
         const me = this;
-        let state = me.state;
-        let {
-            formData
+        const state = me.state;
+        const {
+            formData,
         } = state;
         const {
             className,

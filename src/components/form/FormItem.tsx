@@ -4,12 +4,12 @@ import FormContext from './Context';
 import { FormItemProps } from './types';
 
 class FormItem extends Component<FormItemProps, any> {
-    constructor(props, context) {
-        super(props, context);
-    }
     static contextType = FormContext;
     static displayName = "FormItem"
     state = {}
+    constructor(props, context) {
+        super(props, context);
+    }
     getSizeCls({ span = 0, order = 0, offset = 0, push = 0, pull = 0 }) {
         const prefixCls = "biz-col";
         const classes = classnames(
@@ -19,7 +19,7 @@ class FormItem extends Component<FormItemProps, any> {
                 [`${prefixCls}-offset-${offset}`]: offset,
                 [`${prefixCls}-push-${push}`]: push,
                 [`${prefixCls}-pull-${pull}`]: pull,
-            }
+            },
         );
         return classes;
     }
@@ -55,8 +55,8 @@ class FormItem extends Component<FormItemProps, any> {
         return child !== undefined ? child : null;
     }
     getFieldName = () => {
-        let me = this;
-        let child = me.getOnlyControl() as React.ReactElement<any>;
+        const me = this;
+        const child = me.getOnlyControl() as React.ReactElement<any>;
         // debugger;
         if (!child || !child.props) {
             return '';
@@ -69,23 +69,23 @@ class FormItem extends Component<FormItemProps, any> {
             return null;
         }
 
-        let me = this;
+        const me = this;
         // console.log(me);
-        let {
-            help
+        const {
+            help,
         } = me.props;
-        let fieldName = me.getFieldName();
+        const fieldName = me.getFieldName();
         if (!fieldName) {
             return '';
         }
 
-        let {
+        const {
             validate: {
-                errors = {}
-            } = {}
+                errors = {},
+            } = {},
         } = context;
 
-        let errs = (errors[fieldName] || []) as Array<React.ReactNode>;
+        const errs = (errors[fieldName] || []) as Array<React.ReactNode>;
         if (help) {
             errs.unshift(help);
         }
@@ -97,14 +97,14 @@ class FormItem extends Component<FormItemProps, any> {
         )
     }
     renderLabel() {
-        let me = this;
-        let {
+        const me = this;
+        const {
             label,
             labelCol,
             wrapperCol,
             style,
             validateStatus,
-            help
+            help,
         } = me.props;
 
         if (!label) {
@@ -120,21 +120,19 @@ class FormItem extends Component<FormItemProps, any> {
 
     }
     render() {
-        let me = this;
-        let {
+        const me = this;
+        const {
             label,
             labelCol,
             wrapperCol,
             style,
             validateStatus,
-            help
+            help,
         } = me.props;
         const wrapperCls = classnames('biz-form_content', me.getSizeCls({ span: wrapperCol }));
         return (
             <FormContext.Consumer>
                 {(context) => {
-                    debugger;
-                    console.log(context);
                     return (<div className='biz-form_item'>
                         {me.renderLabel()}
                         <div className={wrapperCls}>

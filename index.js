@@ -25,6 +25,12 @@ import './src/components/loading/style/index.less';
 import Form from './src/components/form';
 import './src/components/form/style/index.less';
 
+import Pagination from './src/components/pagination';
+import './src/components/pagination/style/index.less';
+
+import Tabs from './src/components/tabs';
+import './src/components/tabs/style/index.less';
+
 
 export {
     Layout,
@@ -34,5 +40,7 @@ export {
     Checkbox,
     Radio,
     Table,
-    Form
+    Pagination,
+    Form,
+    Tabs
 };

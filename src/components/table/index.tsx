@@ -9,14 +9,17 @@ class Table<T> extends Component<TableProps<T>, any> {
         }
         return (
             <span>
-                <i className={`biz-icon ${col.sortOrder}`}></i>
+                <i className={`biz-icon ${col.sortOrder}`}>{col.sortOrder}</i>
             </span>
         )
     }
     renderHeader = (columns: Array<ColumnProps<T>>) => {
         return columns.map((col) => {
             return (
-                <th key={col.key} align={col.align || 'center'} colSpan={col.colSpan || 1}>
+                <th key={col.key}
+                    align={col.align || 'center'}
+                    colSpan={col.colSpan || 1}
+                >
                     <span>
                         {col.title}
                     </span>
@@ -28,10 +31,16 @@ class Table<T> extends Component<TableProps<T>, any> {
     renderBody = (columns: Array<ColumnProps<T>>, dataSource: Array<T>) => {
         return dataSource.map((item, i) => {
             const tds = columns.map((col, j) => {
+                let value;
+                if (col.render) {
+                    value = col.render('', item, i);
+                } else if (col.dataIndex) {
+                    const val = item[col.dataIndex];
+                    value = typeof val === 'object' ? JSON.stringify(val) : val;
+                }
                 return (
                     <td key={col.dataIndex}>
-                        {col.dataIndex && item[col.dataIndex]}
-                        {col.render && col.render('', item, i)}
+                        {value}
                     </td>
                 )
             })
