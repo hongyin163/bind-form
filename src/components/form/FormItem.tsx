@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
 import classnames from 'classnames';
+import React, { Component } from 'react';
 import FormContext from './Context';
 import { FormItemProps } from './types';
 
 class FormItem extends Component<FormItemProps, any> {
-    static contextType = FormContext;
-    static displayName = "FormItem"
-    state = {}
+    public static contextType = FormContext;
+    public static displayName = "FormItem"
+    public state = {}
     constructor(props, context) {
         super(props, context);
     }
-    getSizeCls({ span = 0, order = 0, offset = 0, push = 0, pull = 0 }) {
+    public getSizeCls({ span = 0, order = 0, offset = 0, push = 0, pull = 0 }) {
         const prefixCls = "biz-col";
         const classes = classnames(
             {
@@ -23,15 +23,13 @@ class FormItem extends Component<FormItemProps, any> {
         );
         return classes;
     }
-    getControls(children: React.ReactNode, recursively: boolean) {
-        let controls: React.ReactElement<any>[] = [];
-        const childrenArray = React.Children.toArray(children);
-        for (let i = 0; i < childrenArray.length; i++) {
+    public getControls(children: React.ReactNode, recursively: boolean) {
+        let controls: Array<React.ReactElement<any>> = [];
+        const childrenArray = React.Children.toArray(children) as  Array<React.ReactElement<any>>;
+        for (const child of childrenArray) {
             if (!recursively && controls.length > 0) {
                 break;
             }
-
-            const child = childrenArray[i] as React.ReactElement<any>;
             if (
                 child.type &&
                 ((child.type as any) === FormItem || (child.type as any).displayName === 'FormItem')
@@ -50,11 +48,11 @@ class FormItem extends Component<FormItemProps, any> {
         }
         return controls;
     }
-    getOnlyControl() {
+    public getOnlyControl() {
         const child = this.getControls(this.props.children, false)[0];
         return child !== undefined ? child : null;
     }
-    getFieldName = () => {
+    public getFieldName = () => {
         const me = this;
         const child = me.getOnlyControl() as React.ReactElement<any>;
         // debugger;
@@ -64,7 +62,7 @@ class FormItem extends Component<FormItemProps, any> {
         const bind = child.props['data-bind'];
         return bind;
     }
-    getHelpMessage = (context) => {
+    public getHelpMessage = (context) => {
         if (!context) {
             return null;
         }
@@ -85,7 +83,7 @@ class FormItem extends Component<FormItemProps, any> {
             } = {},
         } = context;
 
-        const errs = (errors[fieldName] || []) as Array<React.ReactNode>;
+        const errs = (errors[fieldName] || []) as React.ReactNode[];
         if (help) {
             errs.unshift(help);
         }
@@ -96,7 +94,7 @@ class FormItem extends Component<FormItemProps, any> {
             </div>
         )
     }
-    renderLabel() {
+    public renderLabel() {
         const me = this;
         const {
             label,
@@ -119,7 +117,7 @@ class FormItem extends Component<FormItemProps, any> {
         )
 
     }
-    render() {
+    public render() {
         const me = this;
         const {
             label,

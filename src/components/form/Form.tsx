@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import AsyncValidator from 'async-validator';
 // import { findDomNode } from 'react-dom';
 import classnames from 'classnames';
-import AsyncValidator from 'async-validator';
+import React, { Component } from 'react';
+import FormContext from './Context';
 import FormItem from './FormItem';
 import { FormProps } from './types';
-import FormContext from './Context';
 
 const VALUE_PROP_NAME = {
     'input': {
@@ -15,13 +15,14 @@ const VALUE_PROP_NAME = {
     'select': 'value',
 }
 interface BizForm {
-    validateFields?: Function
+    validateFields?: (cb?: any) => void,
+    validateFieldsAndScroll?: (cb?: any) => void,
 }
 
 class Form extends Component<FormProps, any> implements BizForm {
-    static Item: typeof FormItem;
-    cache = {}
-    rules = {}
+    public static Item: typeof FormItem;
+    public cache = {}
+    public rules = {}
     constructor(props, context) {
         super(props, context);
         const me = this;
@@ -39,7 +40,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             },
         }
     }
-    validateFields = (cb) => {
+    public validateFields = (cb?) => {
         const me = this;
         const {
             formData: {
@@ -56,7 +57,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             });
         });
     }
-    updateValidate(errors: Array<any> = [], cb?) {
+    public updateValidate(errors: any[] = [], cb?) {
         return this.setState((state) => {
 
             const formData = state.formData;
@@ -81,15 +82,15 @@ class Form extends Component<FormProps, any> implements BizForm {
             return state;
         }, cb);
     }
-    validateFieldsAndScroll(cb?) {
+    public validateFieldsAndScroll(cb?) {
         const me = this;
         me.validateFields((errors, values) => {
             if (errors) {
-
+                cb && cb(errors, values);
             }
         })
     }
-    updateValue(name, value, cb) {
+    public updateValue(name, value, cb) {
         return this.setState((state) => {
             const formData = state.formData;
             const val = formData.value;
@@ -101,7 +102,7 @@ class Form extends Component<FormProps, any> implements BizForm {
         }, cb);
     }
 
-    componentWillReceiveProps(props) {
+    public componentWillReceiveProps(props) {
         const me = this;
         const {
             value,
@@ -112,7 +113,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             return state;
         })
     }
-    updateValidateByNme = (name, errors: Array<any>) => {
+    public updateValidateByNme = (name, errors: any[]) => {
 
         return this.setState((state) => {
             const validate = state.formData.validate;
@@ -137,7 +138,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             return state;
         });
     }
-    validateFieldByName = (name, value, cb?) => {
+    public validateFieldByName = (name, value, cb?) => {
         const me = this;
         const allRules = this.rules;
         let rule = allRules;
@@ -155,7 +156,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             cb && cb(errors);
         });
     }
-    onFieldChange(fieldName, valuePropName, e) {
+    public onFieldChange(fieldName, valuePropName, e) {
         const me = this;
         const {
             onFormChange = () => null,
@@ -175,7 +176,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             me.validateFieldByName(fieldName, allValues[fieldName])
         })
     }
-    getValuePropName(control) {
+    public getValuePropName(control) {
         let {
             valuePropName = 'value',
         } = control.props;
@@ -195,7 +196,7 @@ class Form extends Component<FormProps, any> implements BizForm {
         }
         return valuePropName;
     }
-    bindEvent(value, childs) {
+    public bindEvent(value, childs) {
         const me = this;
         if (!childs || React.Children.count(childs) == 0) {
             return;
@@ -226,7 +227,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             me.bindEvent(value, children);
         });
     }
-    render() {
+    public render() {
         const me = this;
         const state = me.state;
         const {

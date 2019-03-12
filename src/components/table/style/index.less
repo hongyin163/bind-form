@@ -19,15 +19,18 @@
     }
     th{
         height: 40px;
-        font-size: 12px;
-        color: #666666;
-        letter-spacing: 0;
-        background-color: @table-header-bg;
         padding:@table-padding-vertical @table-padding-horizontal;
-        border: 1px solid #EDEDED;
-        white-space: nowrap;
-        overflow: hidden;
+        overflow: hidden; 
+        color: #666666;
+        font-size: 12px;
+        letter-spacing: 0;
+        white-space: nowrap;       
         text-overflow: ellipsis;
+        background-color: @table-header-bg;
+        border: 1px solid #EDEDED; 
+        &.sort{
+            cursor: pointer;
+        }
     }
     tbody tr:hover{
         background-color:@table-row-hover-bg

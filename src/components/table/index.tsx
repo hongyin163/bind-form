@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { TableProps, ColumnProps } from './interface';
+import classNames from 'classnames';
+import { ColumnProps, TableProps } from './interface';
 
 class Table<T> extends Component<TableProps<T>, any> {
     constructor(props, context) {
@@ -7,14 +8,14 @@ class Table<T> extends Component<TableProps<T>, any> {
         const me = this;
         me.state = {}
     }
-    renderSortTitle = (col: ColumnProps<T>) => {
+    public renderSortTitle = (col: ColumnProps<T>) => {
         return (
             <span>
                 {this.renderTitle(col)}<i className={`biz-icon ${col.sortOrder}`}>{col.sortOrder}</i>
             </span>
         )
     }
-    renderTitle = (col: ColumnProps<T>) => {
+    public renderTitle = (col: ColumnProps<T>) => {
         let title;
         if (typeof col.title === 'function') {
             title = col.title({ sortOrder: col.sortOrder });
@@ -27,18 +28,16 @@ class Table<T> extends Component<TableProps<T>, any> {
             </span>
         )
     }
-    renderHeader = (columns: Array<ColumnProps<T>>) => {
+    public renderHeader = (columns: Array<ColumnProps<T>>) => {
         const me = this;
         return columns.map((col) => {
-            let thProps: React.ThHTMLAttributes<any> = {
-
-            };
+            const thProps: React.ThHTMLAttributes<any> = {};
+            if (col.sorter) {
+                thProps.className = classNames({ sort: col.sorter });
+            }
             if (col.onHeaderCell) {
-                thProps = {
-                    className: 'sort',
-                    onClick: () => {
-                        col.onHeaderCell(col)
-                    },
+                thProps.onClick = () => {
+                    col.onHeaderCell(col)
                 }
             }
             return (
@@ -57,7 +56,7 @@ class Table<T> extends Component<TableProps<T>, any> {
             )
         })
     }
-    renderBody = (columns: Array<ColumnProps<T>>, dataSource: Array<T>) => {
+    public renderBody = (columns: Array<ColumnProps<T>>, dataSource: T[]) => {
         return dataSource.map((item, i) => {
             const tds = columns.map((col, j) => {
                 let value;
@@ -78,14 +77,14 @@ class Table<T> extends Component<TableProps<T>, any> {
             )
         })
     }
-    isFixed() {
+    public isFixed() {
         const me = this;
         const {
             columns,
         } = me.props;
         return columns.some((col) => col.fixed === true);
     }
-    renderFixedTable(fixed) {
+    public renderFixedTable(fixed) {
         const me = this;
         const {
             columns,
@@ -108,7 +107,7 @@ class Table<T> extends Component<TableProps<T>, any> {
             </table>
         )
     }
-    renderTable() {
+    public renderTable() {
         const me = this;
         const {
             columns,
@@ -127,7 +126,7 @@ class Table<T> extends Component<TableProps<T>, any> {
             </table>
         )
     }
-    getScrollStyle() {
+    public getScrollStyle() {
         const me = this;
         const {
             scroll: { x = 'auto', y = 'auto' } = {},
@@ -149,7 +148,7 @@ class Table<T> extends Component<TableProps<T>, any> {
         }
         return scrollStyle;
     }
-    render() {
+    public render() {
         const me = this;
 
         const scrollStyle = me.getScrollStyle();
