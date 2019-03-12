@@ -32,6 +32,10 @@ import Tabs from './src/components/tabs';
 import './src/components/tabs/style/index.less';
 
 
+
+import Select from './src/components/select/select';
+import './src/style/select/index.less';
+
 export {
     Layout,
     Loading,
@@ -42,5 +46,6 @@ export {
     Table,
     Pagination,
     Form,
-    Tabs
+    Tabs,
+    Select
 };

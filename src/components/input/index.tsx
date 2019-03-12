@@ -12,7 +12,6 @@ export interface InputProps
     suffix?: React.ReactNode;
 }
 
-
 class Input extends Component<InputProps, any> {
     state = {}
 

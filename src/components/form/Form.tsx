@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { findDomNode } from 'react-dom';
+// import { findDomNode } from 'react-dom';
 import classnames from 'classnames';
 import AsyncValidator from 'async-validator';
 import FormItem from './FormItem';
