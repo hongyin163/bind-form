@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
+import './index.less';
 /**
  * type ['primary','minor','danger']
  */
@@ -9,11 +10,10 @@ const ButtonTypes = ['primary','minor','danger'];
 export type ButtonType = (typeof ButtonTypes)[number];
 
 export interface BaseButtonProps {
-    name:string,
     type?: ButtonType;
     className?: string;
     children?: React.ReactNode;
-    success?:()=>void,
+    onClick?:Function,
     disabled?:boolean,
     cStyle?:{}
   }
@@ -21,10 +21,10 @@ export interface BaseButtonProps {
 class Button extends Component<BaseButtonProps,any>{
     handleClick = ()=>{
         let {
-            success
+            onClick
         } = this.props;
-        if(success){
-            success();
+        if(onClick){
+            onClick();
         }
     }
     render(){

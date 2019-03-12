@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { OptionProps } from './interface';
-import classnames from 'classnames';
 
-export default class Option extends Component<OptionProps> {
+interface OptionProp {
+    value:string;
+    onSelect?:Function
+}
+
+export default class Option extends Component<OptionProp,{}> {
 	render() {
-		let { children } = this.props;
-		return <div className="biz-select-option">{children}</div>;
+        let { 
+            children,
+            onSelect
+        } = this.props;
+		return (
+            <div className="biz-select-option" onClick={onSelect.bind(this,this.props)}>
+                {children}
+            </div>
+        );
 	}
 }

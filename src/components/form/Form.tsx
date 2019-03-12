@@ -167,7 +167,6 @@ class Form extends Component<FormProps, any> implements BizForm {
         } else {
             value = e;
         }
-        debugger;
         me.updateValue(fieldName, value, () => {
             onFieldChange(e);
             let allValues = me.state.formData.value;

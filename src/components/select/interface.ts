@@ -12,9 +12,10 @@ export interface OptionProps {
     disabled?: boolean;
     value?: string | number;
     title?: string;
-    children?: React.ReactNode;
+    children?: {} | React.ReactNode;
     className?: string;
     style?: React.CSSProperties;
+    onSelect?:(value: SelectValue) => any;
 }
 
 export interface AbstractSelectProps {
@@ -75,4 +76,5 @@ export interface SelectProps<T = SelectValue> extends AbstractSelectProps {
     removeIcon?: React.ReactNode;
     clearIcon?: React.ReactNode;
     menuItemSelectedIcon?: React.ReactNode;
+    label?:string;
 };

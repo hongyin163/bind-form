@@ -28,6 +28,17 @@ import './src/components/form/style/index.less';
 import Select from './src/components/select/select';
 import './src/style/select/index.less';
 
-import Option from './src//components/select/option';
+import Button from './src/components/button';
 
-export { Layout, Loading, LoadingPage, Input, Checkbox, Radio, Table, Select, Form, Option };
+export { 
+    Layout, 
+    Loading, 
+    LoadingPage, 
+    Input, 
+    Checkbox, 
+    Radio, 
+    Table, 
+    Select, 
+    Form, 
+    Button 
+};

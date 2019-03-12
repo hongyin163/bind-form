@@ -133,7 +133,6 @@ class FormItem extends Component<FormItemProps, any> {
         return (
             <FormContext.Consumer>
                 {(context) => {
-                    debugger;
                     console.log(context);
                     return (<div className='biz-form_item'>
                         {me.renderLabel()}
