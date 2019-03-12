@@ -1,0 +1,33 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+// @pagination-item-size: 32px;
+// @pagination-item-size-sm: 24px;
+// @pagination-font-family: Arial;
+// @pagination-font-weight-active: 500;
+.biz-pagination {
+    width: 100%;
+    text-align: center;
+    &_item {
+        display: inline-block;
+        width: @pagination-item-size;
+        height: @pagination-item-size;
+        line-height: @pagination-item-size;
+        text-align: center;
+        background-color: #c8c8c8;
+        margin: 3px;
+        cursor: pointer;
+        border-radius: 4px;
+        user-select: none;
+        color: #fff;
+        a {
+            color: #fff;
+            display: block;
+            text-decoration: none;
+        }
+        &:active,
+        &.current {
+            font-weight: @pagination-font-weight-active;
+            background-color: @primary-color;
+        }
+    }
+}

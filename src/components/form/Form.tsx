@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import AsyncValidator from 'async-validator';
 // import { findDomNode } from 'react-dom';
 import classnames from 'classnames';
-import AsyncValidator from 'async-validator';
+import React, { Component } from 'react';
+import FormContext from './Context';
 import FormItem from './FormItem';
 import { FormProps } from './types';
-import FormContext from './Context';
 
 const VALUE_PROP_NAME = {
     'input': {
@@ -12,16 +12,17 @@ const VALUE_PROP_NAME = {
         'checkbox': 'checked',
         'radio': 'checked',
     },
-    'select': 'value'
+    'select': 'value',
 }
 interface BizForm {
-    validateFields?: Function
+    validateFields?: (cb?: any) => void,
+    validateFieldsAndScroll?: (cb?: any) => void,
 }
 
 class Form extends Component<FormProps, any> implements BizForm {
-    static Item: typeof FormItem;
-    cache = {}
-    rules = {}
+    public static Item: typeof FormItem;
+    public cache = {}
+    public rules = {}
     constructor(props, context) {
         super(props, context);
         const me = this;
@@ -33,18 +34,18 @@ class Form extends Component<FormProps, any> implements BizForm {
             formData: {
                 validate: {
                     isValidate: false,
-                    errors: {}
+                    errors: {},
                 },
-                value
-            }
+                value,
+            },
         }
     }
-    validateFields = (cb) => {
-        let me = this;
-        let {
+    public validateFields = (cb?) => {
+        const me = this;
+        const {
             formData: {
-                value
-            }
+                value,
+            },
         } = me.state;
 
         const allRules = this.rules;
@@ -56,10 +57,10 @@ class Form extends Component<FormProps, any> implements BizForm {
             });
         });
     }
-    updateValidate(errors: Array<any> = [], cb?) {
+    public updateValidate(errors: any[] = [], cb?) {
         return this.setState((state) => {
 
-            let formData = state.formData;
+            const formData = state.formData;
             let isValidate = false;
             let nextError;
             if (!errors || errors.length == 0) {
@@ -68,40 +69,40 @@ class Form extends Component<FormProps, any> implements BizForm {
             } else {
                 nextError = errors.reduce((pre, item) => {
                     return Object.assign(pre, {
-                        [item.field]: item.message
+                        [item.field]: item.message,
                     })
                 }, {});
             }
             state.formData = Object.assign({}, formData, {
                 validate: {
                     isValidate,
-                    errors: nextError
-                }
+                    errors: nextError,
+                },
             })
             return state;
         }, cb);
     }
-    validateFieldsAndScroll(cb?) {
-        let me = this;
+    public validateFieldsAndScroll(cb?) {
+        const me = this;
         me.validateFields((errors, values) => {
             if (errors) {
-
+                cb && cb(errors, values);
             }
         })
     }
-    updateValue(name, value, cb) {
+    public updateValue(name, value, cb) {
         return this.setState((state) => {
-            let formData = state.formData;
-            let val = formData.value;
+            const formData = state.formData;
+            const val = formData.value;
             val[name] = value;
             state.formData = Object.assign({}, formData, {
-                value: val
+                value: val,
             })
             return state;
         }, cb);
     }
 
-    componentWillReceiveProps(props) {
+    public componentWillReceiveProps(props) {
         const me = this;
         const {
             value,
@@ -112,42 +113,42 @@ class Form extends Component<FormProps, any> implements BizForm {
             return state;
         })
     }
-    updateValidateByNme = (name, errors: Array<any>) => {
+    public updateValidateByNme = (name, errors: any[]) => {
 
         return this.setState((state) => {
-            let validate = state.formData.validate;
-            let isValidate = validate.isValidate;
-            let preError = validate.errors;
+            const validate = state.formData.validate;
+            const isValidate = validate.isValidate;
+            const preError = validate.errors;
             let errMsg = '';
             if (!errors || errors.length == 0) {
                 errMsg = '';
             } else {
                 errMsg = errors.filter(p => p.field == name).map(p => p.message).join('');
             }
-            let nextError = Object.assign(preError, {
-                [name]: errMsg
+            const nextError = Object.assign(preError, {
+                [name]: errMsg,
             });
             // console.log(nextError);
             state.formData = Object.assign({}, state.formData, {
                 validate: {
                     isValidate,
-                    errors: nextError
-                }
+                    errors: nextError,
+                },
             })
             return state;
         });
     }
-    validateFieldByName = (name, value, cb?) => {
-        let me = this;
+    public validateFieldByName = (name, value, cb?) => {
+        const me = this;
         const allRules = this.rules;
         let rule = allRules;
         if (name) {
             rule = {
-                [name]: allRules[name]
+                [name]: allRules[name],
             }
         }
-        let vals = {
-            [name]: value
+        const vals = {
+            [name]: value,
         }
         const validator = new AsyncValidator(rule);
         validator.validate(vals, { first: true }, (errors) => {
@@ -155,7 +156,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             cb && cb(errors);
         });
     }
-    onFieldChange(fieldName, valuePropName, e) {
+    public onFieldChange(fieldName, valuePropName, e) {
         const me = this;
         const {
             onFormChange = () => null,
@@ -169,21 +170,21 @@ class Form extends Component<FormProps, any> implements BizForm {
         }
         me.updateValue(fieldName, value, () => {
             onFieldChange(e);
-            let allValues = me.state.formData.value;
+            const allValues = me.state.formData.value;
             onFormChange(allValues);
             me.validateFieldByName(fieldName, allValues[fieldName])
         })
     }
-    getValuePropName(control) {
+    public getValuePropName(control) {
         let {
-            valuePropName = 'value'
+            valuePropName = 'value',
         } = control.props;
         if (typeof control.type == 'string') {
-            let ctrlTypes = VALUE_PROP_NAME[control.type];
+            const ctrlTypes = VALUE_PROP_NAME[control.type];
             if (ctrlTypes) {
                 if (typeof ctrlTypes == "object") {
-                    if (control.props['type']) {
-                        valuePropName = ctrlTypes[control.props['type']] || 'value';
+                    if (control.props.type) {
+                        valuePropName = ctrlTypes[control.props.type] || 'value';
                     } else {
                         valuePropName = 'value';
                     }
@@ -194,7 +195,7 @@ class Form extends Component<FormProps, any> implements BizForm {
         }
         return valuePropName;
     }
-    bindEvent(value, childs) {
+    public bindEvent(value, childs) {
         const me = this;
         if (!childs || React.Children.count(childs) == 0) {
             return;
@@ -225,11 +226,11 @@ class Form extends Component<FormProps, any> implements BizForm {
             me.bindEvent(value, children);
         });
     }
-    render() {
+    public render() {
         const me = this;
-        let state = me.state;
-        let {
-            formData
+        const state = me.state;
+        const {
+            formData,
         } = state;
         const {
             className,

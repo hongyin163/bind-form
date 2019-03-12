@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
 import classnames from 'classnames';
+import React, { Component } from 'react';
 import FormContext from './Context';
 import { FormItemProps } from './types';
 
 class FormItem extends Component<FormItemProps, any> {
+    public static contextType = FormContext;
+    public static displayName = "FormItem"
+    public state = {}
     constructor(props, context) {
         super(props, context);
     }
-    static contextType = FormContext;
-    static displayName = "FormItem"
-    state = {}
-    getSizeCls({ span = 0, order = 0, offset = 0, push = 0, pull = 0 }) {
+    public getSizeCls({ span = 0, order = 0, offset = 0, push = 0, pull = 0 }) {
         const prefixCls = "biz-col";
         const classes = classnames(
             {
@@ -19,19 +19,17 @@ class FormItem extends Component<FormItemProps, any> {
                 [`${prefixCls}-offset-${offset}`]: offset,
                 [`${prefixCls}-push-${push}`]: push,
                 [`${prefixCls}-pull-${pull}`]: pull,
-            }
+            },
         );
         return classes;
     }
-    getControls(children: React.ReactNode, recursively: boolean) {
-        let controls: React.ReactElement<any>[] = [];
-        const childrenArray = React.Children.toArray(children);
-        for (let i = 0; i < childrenArray.length; i++) {
+    public getControls(children: React.ReactNode, recursively: boolean) {
+        let controls: Array<React.ReactElement<any>> = [];
+        const childrenArray = React.Children.toArray(children) as  Array<React.ReactElement<any>>;
+        for (const child of childrenArray) {
             if (!recursively && controls.length > 0) {
                 break;
             }
-
-            const child = childrenArray[i] as React.ReactElement<any>;
             if (
                 child.type &&
                 ((child.type as any) === FormItem || (child.type as any).displayName === 'FormItem')
@@ -50,13 +48,13 @@ class FormItem extends Component<FormItemProps, any> {
         }
         return controls;
     }
-    getOnlyControl() {
+    public getOnlyControl() {
         const child = this.getControls(this.props.children, false)[0];
         return child !== undefined ? child : null;
     }
-    getFieldName = () => {
-        let me = this;
-        let child = me.getOnlyControl() as React.ReactElement<any>;
+    public getFieldName = () => {
+        const me = this;
+        const child = me.getOnlyControl() as React.ReactElement<any>;
         // debugger;
         if (!child || !child.props) {
             return '';
@@ -64,28 +62,28 @@ class FormItem extends Component<FormItemProps, any> {
         const bind = child.props['data-bind'];
         return bind;
     }
-    getHelpMessage = (context) => {
+    public getHelpMessage = (context) => {
         if (!context) {
             return null;
         }
 
-        let me = this;
+        const me = this;
         // console.log(me);
-        let {
-            help
+        const {
+            help,
         } = me.props;
-        let fieldName = me.getFieldName();
+        const fieldName = me.getFieldName();
         if (!fieldName) {
             return '';
         }
 
-        let {
+        const {
             validate: {
-                errors = {}
-            } = {}
+                errors = {},
+            } = {},
         } = context;
 
-        let errs = (errors[fieldName] || []) as Array<React.ReactNode>;
+        const errs = (errors[fieldName] || []) as React.ReactNode[];
         if (help) {
             errs.unshift(help);
         }
@@ -96,15 +94,15 @@ class FormItem extends Component<FormItemProps, any> {
             </div>
         )
     }
-    renderLabel() {
-        let me = this;
-        let {
+    public renderLabel() {
+        const me = this;
+        const {
             label,
             labelCol,
             wrapperCol,
             style,
             validateStatus,
-            help
+            help,
         } = me.props;
 
         if (!label) {
@@ -119,21 +117,20 @@ class FormItem extends Component<FormItemProps, any> {
         )
 
     }
-    render() {
-        let me = this;
-        let {
+    public render() {
+        const me = this;
+        const {
             label,
             labelCol,
             wrapperCol,
             style,
             validateStatus,
-            help
+            help,
         } = me.props;
         const wrapperCls = classnames('biz-form_content', me.getSizeCls({ span: wrapperCol }));
         return (
             <FormContext.Consumer>
                 {(context) => {
-                    console.log(context);
                     return (<div className='biz-form_item'>
                         {me.renderLabel()}
                         <div className={wrapperCls}>
