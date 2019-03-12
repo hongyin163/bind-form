@@ -93,7 +93,7 @@ class Pagination extends Component<PaginationProps, any> {
             )
         }
 
-        if (current > 1) {
+        if (current >= 1) {
             pre.push(
                 <li key={'<' + (current - 1)} className="biz-pagination_item pre">
                     <a onClick={me.onChange.bind(me, current - 1)} >{'<'}</a>

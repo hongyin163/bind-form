@@ -5,23 +5,30 @@ export interface TableStateFilters {
 }
 
 export type SortOrder = 'descend' | 'ascend';
+export type CompareFn<T> = ((a: T, b: T, sortOrder?: SortOrder) => number);
+export type ColumnFilterItem = { text: string; value: string; children?: ColumnFilterItem[] };
+
 export interface ColumnProps<T> {
     title?:
-    | React.ReactNode
-    | ((
-        options: {
-            filters: TableStateFilters;
+      | React.ReactNode
+      | ((
+          options: {
+            filters?: TableStateFilters;
             sortOrder?: SortOrder;
-        },
-    ) => React.ReactNode);
+          },
+        ) => React.ReactNode);
     key?: React.Key;
     dataIndex?: string;
     render?: (text: any, record: T, index: number) => React.ReactNode;
     align?: 'left' | 'right' | 'center';
+    filters?: ColumnFilterItem[];
+    onFilter?: (value: any, record: T) => boolean;
     filterMultiple?: boolean;
     filterDropdown?: React.ReactNode | ((props: Object) => React.ReactNode);
     filterDropdownVisible?: boolean;
     onFilterDropdownVisibleChange?: (visible: boolean) => void;
+    sorter?: boolean | CompareFn<T>;
+    defaultSortOrder?: SortOrder;
     colSpan?: number;
     width?: string | number;
     className?: string;
@@ -33,7 +40,7 @@ export interface ColumnProps<T> {
     onCellClick?: (record: T, event: any) => void;
     onCell?: (record: T, rowIndex: number) => any;
     onHeaderCell?: (props: ColumnProps<T>) => any;
-}
+  }
 
 export interface TableProps<T> {
     prefixCls?: string;
