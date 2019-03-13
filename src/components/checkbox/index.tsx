@@ -24,6 +24,7 @@ class Checkbox extends Component<CheckboxProps, any> {
             checked,
             disabled,
             className,
+            children,
             ...rest
         } = this.props;
         let cls = classnames({
@@ -34,7 +35,7 @@ class Checkbox extends Component<CheckboxProps, any> {
         })
         return (
             <div className={cls} onClick={me.onCheck}>
-                
+                {children}
             </div >
         );
     }
