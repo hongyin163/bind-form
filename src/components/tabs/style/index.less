@@ -1,32 +1,59 @@
-@tabHeight: 74px;
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+@tabs-card-head-background: @background-color-light;
+@tabs-card-height: 46px;
+@tabs-card-active-color: @primary-color;
+@tabs-title-font-size:12px;
+// @tabs-title-font-size-lg: @font-size-lg;
+// @tabs-title-font-size-sm: @font-size-base;
+// @tabs-ink-bar-color: @primary-color;
+@tabs-bar-margin: 0 0 0 0;
+@tabs-horizontal-margin: 0 50px 0 0;
+@tabs-horizontal-padding: 0 16px;
+// @tabs-horizontal-padding-lg: 16px;
+// @tabs-horizontal-padding-sm: 8px 16px;
+// @tabs-vertical-padding: 8px 24px;
+// @tabs-vertical-margin: 0 0 16px 0;
+// @tabs-scrolling-size: 32px;
+// @tabs-highlight-color: @primary-color;
+// @tabs-hover-color: @primary-5;
+// @tabs-active-color: @primary-7;
+@tabs-border-top:1px;
+@tabs-border-bottom:0;
+@tabs-bottom-line:2px;
+
 .biz-tabs {
     &_nav {
-        box-sizing: content-box;
-        border-bottom: 1px solid #e8e8e8;
-        margin: 0 0 16px;
+        // box-sizing: content-box;
+        border-top: @tabs-border-top solid #EDEDED;
+        border-bottom: @tabs-border-bottom solid #EDEDED;
+        margin: @tabs-bar-margin;
         outline: none;
-        height: @tabHeight+1;
+        height: @tabs-card-height;
+        background-color: @tabs-card-head-background;
+        padding: 0 30px;
     }
     &_tab {
-        box-sizing: content-box;
+        // box-sizing: content-box;
         position: relative;
         display: inline-block;
-        margin: 0 2px;
-        background: #ffffff;
+        margin: @tabs-horizontal-margin;
+        background: @tabs-card-head-background;
         border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        font-size: 20px;
-        color: #999999;
-        line-height: @tabHeight;
-        height: @tabHeight;
+        // border-radius: 4px 4px 0 0;
+        font-size: @tabs-title-font-size;
+       
+        color: #666666;
+        line-height: @tabs-card-height - @tabs-border-top - @tabs-border-bottom - @tabs-bottom-line;
+        height: @tabs-card-height - @tabs-border-top - @tabs-border-bottom - @tabs-bottom-line;
         text-align: center;
-        padding: 0 35px;
+        padding: @tabs-horizontal-padding;
         cursor: pointer;
         .line {
-            display: none;
-            height: 4px;
-            width: 40px;
-            background: #54D34D;
+            visibility: hidden;
+            height: @tabs-bottom-line;
+            width: 100%;
+            background-color: @tabs-card-active-color;
             margin: 0 auto;
         }
     }
@@ -34,11 +61,12 @@
         padding-left: 0;
     }
     &_tab.active {
-        background: #fff;
-        padding-bottom: 1px;
-        color: #000;
+        padding-bottom: 2px;
+        color: @tabs-card-active-color;
+        font-weight: bold;
+        background: @tabs-card-head-background;
         .line {
-            display: block;
+            visibility:visible;
         }
     }
 }
