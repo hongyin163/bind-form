@@ -30,7 +30,6 @@ export default class Select extends Component< SelectPropsCustom, {}>{
             children,
             defaultValue
         } = this.props;
-        console.log(children,defaultValue,1111);
         if(defaultValue){
             React.Children.map(children,(child:React.ReactElement,i)=>{
                 if(defaultValue == child.props.value){
