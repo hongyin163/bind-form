@@ -25,6 +25,7 @@ class Checkbox extends Component<CheckboxProps, any> {
             checked,
             disabled,
             className,
+            children,
             ...rest
         } = this.props;
         const cls = classnames({

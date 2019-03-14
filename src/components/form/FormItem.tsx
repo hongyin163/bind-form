@@ -126,12 +126,13 @@ class FormItem extends Component<FormItemProps, any> {
             style,
             validateStatus,
             help,
+            className
         } = me.props;
         const wrapperCls = classnames('biz-form_content', me.getSizeCls({ span: wrapperCol }));
         return (
             <FormContext.Consumer>
                 {(context) => {
-                    return (<div className='biz-form_item'>
+                    return (<div className={classnames('biz-form_item',className?className:'')} >
                         {me.renderLabel()}
                         <div className={wrapperCls}>
                             <div className="biz-form_control">
