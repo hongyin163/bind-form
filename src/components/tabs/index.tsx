@@ -37,6 +37,16 @@ class Tabs extends Component<TabsProps, any> {
             onChange(activeKey);
         });
     }
+    renderTab(props) {
+        if (typeof props.tab === 'string') {
+            return (
+                <span dangerouslySetInnerHTML={{
+                    __html: props.tab,
+                }}></span>
+            )
+        }
+        return props.tab;
+    }
     render() {
         const me = this;
         const {
@@ -55,7 +65,7 @@ class Tabs extends Component<TabsProps, any> {
             if (!activeKey) {
                 activeKey = child.key;
             }
-            
+
             const props = child.props || {};
 
             tabs.push(
@@ -64,9 +74,7 @@ class Tabs extends Component<TabsProps, any> {
                     className={`biz-tabs_tab ${activeKey === child.key ? 'active' : ''}`}
                     key={child.key}
                 >
-                    <span dangerouslySetInnerHTML={{
-                        __html: props.tab,
-                    }}></span>
+                    {me.renderTab(props)}
                     <div className="line"></div>
                 </div>,
             );
@@ -93,6 +101,7 @@ class Tabs extends Component<TabsProps, any> {
     }
 }
 
+// tslint:disable-next-line: max-classes-per-file
 class TabPane extends Component<TabPaneProps, any> {
     state = {}
     render() {

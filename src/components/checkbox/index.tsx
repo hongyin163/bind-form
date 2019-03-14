@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
 import classnames from 'classnames';
+import React, { Component } from 'react';
+import Icon from '../icon'
 
 interface CheckboxProps {
     checked?: boolean,
@@ -9,32 +10,33 @@ interface CheckboxProps {
 }
 
 class Checkbox extends Component<CheckboxProps, any> {
-    onCheck = () => {
-        let me = this;
-        let {
+    public onCheck = () => {
+        const me = this;
+        const {
             checked,
-            onChange = () => null
+            onChange = () => null,
         } = me.props;
 
         onChange(!checked);
     }
-    render() {
-        let me = this;
-        let {
+    public render() {
+        const me = this;
+        const {
             checked,
             disabled,
             className,
             ...rest
         } = this.props;
-        let cls = classnames({
+        const cls = classnames({
             'biz-checkbox': true,
             'checked': checked,
             'disabled': disabled,
-            [className]: !!className
+            [className]: !!className,
         })
+        const type = checked ? 'checked1' : 'unchecked1';
         return (
             <div className={cls} onClick={me.onCheck}>
-                
+                <Icon type={type} />
             </div >
         );
     }

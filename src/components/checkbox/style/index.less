@@ -2,7 +2,29 @@
 @import '../../style/mixins/index';
 
 // @import './mixin';
+// @checkbox-size : 16px;
+// @checkbox-color : @primary-color;
+// @checkbox-check-color : #fff;
+// @checkbox-border-width : @border-width-base;
+// @checkbox-disable-color : #BBB;
 
 .biz-checkbox {
-    
+    .biz-icon{
+        font-weight: normal;
+        font-size: @checkbox-size;
+    }
+    .biz-icon-checked1{
+        color:@checkbox-check-color;    
+    }
+    .biz-icon-unchecked1{
+        color:@checkbox-uncheck-color;    
+    }
+    &:hover{
+        cursor: pointer;
+    }
+    &.disabled{
+        .biz-icon{
+            color: @checkbox-disable-color;
+        }
+    }
 }

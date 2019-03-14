@@ -34,9 +34,12 @@ import './src/components/tabs/style/index.less';
 
 
 import Select from './src/components/select/select';
-import './src/style/select/index.less';
+import './src/components/select/style/index.less';
 
 import Button from './src/components/button';
+import './src/components/button/style/index.less';
+
+import Icon from './src/components/icon';
 
 export {
     Layout,
@@ -50,5 +53,6 @@ export {
     Form,
     Tabs,
     Select,
-    Button 
+    Button,
+    Icon
 };
