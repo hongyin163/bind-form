@@ -1,6 +1,7 @@
 import { Checkbox } from 'biz-ui';
 import classNames from 'classnames';
 import React, { Component } from 'react';
+import Icon from '../icon';
 import { ColumnProps, TableProps } from './interface';
 
 class Table<T> extends Component<TableProps<T>, any> {
@@ -8,61 +9,83 @@ class Table<T> extends Component<TableProps<T>, any> {
         super(props, context);
         const me = this;
         me.state = {
-            selectAll: false,
             selectedRowKeys: {},
+            hoverRowIndex: -1,
         }
     }
-    getSelectKeys(records = []) {
+    public getSelectKeys(records = []) {
         const me = this;
         return records
             .map((p, i) => me.getRowKey(p, i));
     }
-    getSelectedRecord() {
+    public getSelectedRecord() {
         const me = this;
         const {
-            dataSource
+            dataSource,
         } = me.props
         const {
-            selectAll,
             selectedRowKeys,
         } = me.state;
-        if (selectAll) {
-            return dataSource;
-        }
+
         return dataSource
             .filter((p, i) => selectedRowKeys[me.getRowKey(p, i)] === true)
     }
-    public setSelectAll(selectAll, cb?) {
+    public setRowSelected(key, selected) {
         const me = this;
         return new Promise((resolve, reject) => {
             me.setState((state) => {
-                state.selectAll = selectAll;
-                // state.selectedRowKeys = {};
+                const selectedRowKeys = state.selectedRowKeys;
+                if (!selected) {
+                    delete selectedRowKeys[key];
+                } else {
+                    state.selectedRowKeys[key] = selected;
+                }
+                state.selectedRowKeys = selectedRowKeys;
                 return state;
             }, () => {
                 resolve();
-                // tslint:disable-next-line: no-unused-expression
-                cb && cb();
-            });
+            })
         })
     }
-    public setRowSelected(key, selected, cb?) {
+    public setAllRowSelected(allSelected: boolean) {
         const me = this;
+        const {
+            dataSource,
+        } = me.props
+
         return new Promise((resolve, reject) => {
             me.setState((state) => {
-                state.selectedRowKeys[key] = selected;
+                if (allSelected) {
+                    state.selectedRowKeys = dataSource
+                        .reduce((pre, p, i) => {
+                            return Object.assign(pre, {
+                                [me.getRowKey(p, i)]: true,
+                            })
+                        }, {})
+                } else {
+                    state.selectedRowKeys = {};
+                }
                 return state;
             }, () => {
                 resolve();
-                // tslint:disable-next-line: no-unused-expression
-                cb && cb();
             })
         })
     }
     public renderSortTitle = (col: ColumnProps<T>) => {
+        let type = '';
+        if (col.sortOrder === 'ascend') {
+            type = 'arrow-up';
+        } else if (col.sortOrder === 'descend') {
+            type = 'arrow-down';
+        }
         return (
             <span>
-                {this.renderTitle(col)}<i className={`biz-icon ${col.sortOrder}`}>{col.sortOrder}</i>
+                {this.renderTitle(col)}
+                {
+                    col.sortOrder && (
+                        <Icon type={type} />
+                    )
+                }
             </span>
         )
     }
@@ -108,6 +131,9 @@ class Table<T> extends Component<TableProps<T>, any> {
         })
     }
     public renderBody = (columns: Array<ColumnProps<T>>, dataSource: T[]) => {
+        const {
+            hoverRowIndex,
+        } = this.state;
         return dataSource.map((item, i) => {
             const tds = columns.map((col, j) => {
                 let value;
@@ -124,7 +150,13 @@ class Table<T> extends Component<TableProps<T>, any> {
                 )
             })
             return (
-                <tr>{tds}</tr>
+                <tr
+                    key={i}
+                    data-index={i}
+                    className={`${hoverRowIndex === i ? 'biz-table_row-hover' : ''}`}
+                >
+                    {tds}
+                </tr>
             )
         })
     }
@@ -145,25 +177,27 @@ class Table<T> extends Component<TableProps<T>, any> {
         }
         return true;
     }
-    isAllChecked() {
+    public isAllChecked() {
         const me = this;
         const {
-            selectAll,
-            selectedRowKeys = {}
+            selectedRowKeys = {},
         } = me.state;
         const {
-            columns,
             dataSource,
             rowKey,
             rowSelection,
         } = me.props;
 
         if (!rowKey || !rowSelection) {
+            console.warn('未设置rowKey或rowSelection')
+            return false;
+        }
+        if (Object.keys(selectedRowKeys).length < dataSource.length) {
             return false;
         }
         return dataSource.every((p, i) => selectedRowKeys[me.getRowKey(p, i)])
     }
-    onCheckAll = (e) => {
+    public onCheckAll = (e) => {
         const me = this;
         const {
             rowSelection: {
@@ -171,60 +205,46 @@ class Table<T> extends Component<TableProps<T>, any> {
             },
         } = me.props;
         const checked = e.target ? e.target.checked : e;
-        me.setSelectAll(checked, () => {
-            const records = me.getSelectedRecord();
-            const keys = me.getSelectKeys(records);
-            onChange(keys, records);
-        });
-    }
-    onCheckRow = (key,e) => {
-        const me = this;
-        const {
-            rowSelection: {
-                onChange,
-            },
-        } = me.props;
-        const checked = e.target ? e.target.checked : e;
-        if (!checked) {
-            me.setRowSelected(key, checked)
-                .then(() => {
-                    return me.setSelectAll(false)
-                }).then(() => {
-                    const records = me.getSelectedRecord();
-                    const keys = me.getSelectKeys(records);
-                    onChange(keys, records);
-                });
-        } else {
-            me.setRowSelected(key, checked).then(() => {
-                if (me.isAllChecked()) {
-                    return me.setSelectAll(true);
-                }
-                return '';
-            }).then(() => {
+        me.setAllRowSelected(checked)
+            .then(() => {
                 const records = me.getSelectedRecord();
                 const keys = me.getSelectKeys(records);
                 onChange(keys, records);
-            })
-        }
+            });
     }
-    getRowKey = (record, i) => {
+    public onCheckRow = (key, e) => {
+        const me = this;
+        const {
+            rowSelection: {
+                onChange,
+            },
+        } = me.props;
+        const checked = e.target ? e.target.checked : e;
+        me.setRowSelected(key, checked)
+            .then(() => {
+                const records = me.getSelectedRecord();
+                const keys = me.getSelectKeys(records);
+                onChange(keys, records);
+            });
+    }
+    public getRowKey = (record, i) => {
         const me = this;
         const {
             rowSelection,
-            rowKey
+            rowKey,
         } = me.props;
         if (typeof rowKey === "function") {
             return rowKey(record, i);
         }
         return record[rowKey];
     }
-    appendSelectionCol(columns) {
+    public appendSelectionCol(columns) {
         const me = this;
         const {
-            selectAll,
-            selectedRowKeys = {}
+
+            selectedRowKeys = {},
         } = me.state;
-        debugger;
+
         const {
             rowSelection,
         } = me.props;
@@ -234,6 +254,7 @@ class Table<T> extends Component<TableProps<T>, any> {
                 columnTitle,
                 fixed,
             } = rowSelection;
+            const selectAll = me.isAllChecked();
             return [{
                 fixed: fixed || 'left',
                 title() {
@@ -246,13 +267,13 @@ class Table<T> extends Component<TableProps<T>, any> {
                 width: columnWidth || 40,
                 render(text, record, i) {
                     const key = me.getRowKey(record, i);
-                    debugger;
+
                     return (
                         <span>
                             {columnTitle}
                             <Checkbox
                                 key={key}
-                                checked={selectAll || selectedRowKeys[key]}
+                                checked={selectedRowKeys[key]}
                                 onChange={me.onCheckRow.bind(me, key)}
                             />
                         </span>
@@ -282,11 +303,46 @@ class Table<T> extends Component<TableProps<T>, any> {
                         {me.renderHeader(cols)}
                     </tr>
                 </thead>
-                <tbody>
+                <tbody >
                     {me.renderBody(cols, dataSource)}
                 </tbody>
             </table>
         )
+    }
+    public getRowTr(cell: HTMLElement, currentTarget) {
+        if (cell === currentTarget) {
+            return;
+        }
+        if (cell.tagName.toLowerCase() === 'tr') {
+            return cell;
+        }
+        let parent = cell.parentNode as HTMLElement;
+        while (parent.tagName.toLowerCase() !== 'tr') {
+            // console.log(parent.tagName.toLowerCase());
+            if (parent === currentTarget) {
+                return null;
+            }
+            parent = parent.parentNode as HTMLElement;
+        }
+        return parent;
+    }
+    public onMouseOverRow = (e) => {
+        const me = this;
+        const tr = me.getRowTr(e.target, e.currentTarget);
+        if (!tr) {
+            return;
+        }
+        const hoverRowIndex = Number(tr.dataset.index);
+        me.setState({
+            hoverRowIndex,
+        })
+        // console.log(tr.dataset.index);
+    }
+    public onMouseOutRow = (e) => {
+        // console.log('onMouseOutRow');
+        this.setState({
+            hoverRowIndex: -1,
+        })
     }
     public renderTable() {
         const me = this;
@@ -302,7 +358,7 @@ class Table<T> extends Component<TableProps<T>, any> {
                         {me.renderHeader(cols)}
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  >
                     {me.renderBody(cols, dataSource)}
                 </tbody>
             </table>
@@ -332,12 +388,11 @@ class Table<T> extends Component<TableProps<T>, any> {
     }
     public render() {
         const me = this;
-        console.log(me.state);
         const scrollStyle = me.getScrollStyle();
 
         return (
             <div className="biz-table">
-                <div className="biz-table_content">
+                <div className="biz-table_content" onMouseOver={me.onMouseOverRow} onMouseOut={me.onMouseOutRow}>
                     <div className="biz-table_scroll" style={{
                         ...scrollStyle,
                     }}>

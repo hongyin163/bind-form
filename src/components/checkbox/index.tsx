@@ -4,9 +4,10 @@ import Icon from '../icon'
 
 interface CheckboxProps {
     checked?: boolean,
-    onChange?: Function,
+    onChange?: (e) => void;
     disabled?: boolean,
-    className?: string
+    className?: string,
+    defaultChecked?: boolean;
 }
 
 class Checkbox extends Component<CheckboxProps, any> {

@@ -20,7 +20,12 @@
         color:@checkbox-uncheck-color;    
     }
     &:hover{
-        cursor: pointer;
+        &:hover{
+            .biz-icon{
+                color: @checkbox-check-color;
+                cursor: pointer;
+            }
+        }
     }
     &.disabled{
         .biz-icon{

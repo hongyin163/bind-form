@@ -1,55 +1,45 @@
-import React, { Component } from 'react';
 import classnames from 'classnames';
+import React, { Component } from 'react';
+import Icon from '../icon'
+import { RadioGroup } from './RadioGroup';
 
-interface CheckboxProps {
+interface RadioProps {
     checked?: boolean,
-    onChange?: Function,
+    onChange?: (e) => void;
     disabled?: boolean,
-    className?: string
+    className?: string,
+    defaultChecked?: boolean;
 }
 
-class Radio extends Component<CheckboxProps, any> {
-    onCheck = () => {
-        let me = this;
-        let {
+class Radio extends Component<RadioProps, any> {
+    public static RadioGroup: typeof RadioGroup;
+    public onCheck = () => {
+        const me = this;
+        const {
             checked,
-            onChange = () => null
+            onChange = () => null,
         } = me.props;
 
         onChange(!checked);
     }
-    static RadioGroup: typeof RadioGroup;
-    render() {
-        let me = this;
-        let {
+    public render() {
+        const me = this;
+        const {
             checked,
             disabled,
             className,
         } = this.props;
-        let cls = classnames({
-            'biz-checkbox': true,
+        const cls = classnames({
+            'biz-radio': true,
             'checked': checked,
             'disabled': disabled,
-            [className]: !!className
+            [className]: !!className,
         })
+        const type = checked ? 'checked2' : 'unchecked2';
         return (
             <div className={cls} onClick={me.onCheck}>
+                <Icon type={type} />
             </div >
-        );
-    }
-}
-
-class RadioGroup extends Component {
-    state = {}
-    render() {
-        let me = this;
-        let {
-            children
-        } = me.props;
-        return (
-            <div className="radio-group">
-                {children}
-            </div>
         );
     }
 }
