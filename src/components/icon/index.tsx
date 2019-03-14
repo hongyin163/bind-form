@@ -20,7 +20,7 @@ class Icon extends Component<IconProps, any> {
             type,
             ...rest
         } = this.props;
-        const cls = classNames(prefixCls, ` biz-icon-${type}`, className);
+        const cls = classNames(prefixCls, ` ${prefixCls}-${type}`, className);
         return (
             <i className={cls} {...rest}></i>
         );
