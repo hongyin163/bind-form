@@ -31,6 +31,7 @@ class Tabs extends Component<TabsProps, any> {
         const {
             onChange = () => null,
         } = me.props;
+        console.log('onTabClick');
         me.setState({
             activeKey,
         }, () => {

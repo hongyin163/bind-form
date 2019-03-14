@@ -13,6 +13,21 @@ class Table<T> extends Component<TableProps<T>, any> {
             hoverRowIndex: -1,
         }
     }
+    componentWillReceiveProps(props) {
+        // const {
+        //     rowSelection: {
+        //         selectedRowKeys = [],
+        //     } = {},
+        // } = props;
+        // const selectRowMap = selectedRowKeys.reduce((pre, current, i) => {
+        //     return Object.assign(pre, {
+        //         current: true,
+        //     })
+        // }, {})
+        // this.setState({
+        //     selectedRowKeys: selectRowMap,
+        // })
+    }
     public getSelectKeys(records = []) {
         const me = this;
         return records

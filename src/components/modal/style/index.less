@@ -1,0 +1,52 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+.biz-modal {
+    &_dialog {
+        position: relative;
+        width: 500px;
+    }
+    &_header {
+        padding: 16px 24px;
+        border-radius: @border-radius-base @border-radius-base 0 0;
+        background: @modal-header-bg;
+        color: @text-color;
+        border-bottom: @border-width-base @border-style-base @border-color-split;
+    }
+    &_title {
+        margin: 0;
+        font-size: @font-size-lg;
+        line-height: 22px;
+        font-weight: 500;
+        color: @heading-color;
+    }
+    &_body {
+        padding: 24px;
+        font-size: @font-size-base;
+        line-height: @line-height-base;
+        word-wrap: break-word;
+    }
+    &_footer {
+        border-top: @border-width-base @border-style-base @border-color-split;
+        padding: 10px 16px;
+        text-align: right;
+        border-radius: 0 0 @border-radius-base @border-radius-base;
+        button+button {
+            margin-left: 8px;
+            margin-bottom: 0;
+        }
+    }
+    &_mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: @modal-mask-bg;
+        height: 100%;
+        z-index: @zindex-modal-mask;
+        filter: ~'alpha(opacity=50)';
+        &-hidden {
+            display: none;
+        }
+    }
+}
