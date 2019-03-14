@@ -5,7 +5,6 @@ import {SelectProps } from './interface';
 import classnames from 'classnames';
 import Option from './option';
 import './style/index.less';
-import { Props } from '../../../../../src/cv/components/demo.bak';
 
 export interface SelectPropsCustom extends  SelectProps{
     label?:string;
@@ -50,11 +49,15 @@ export default class Select extends Component< SelectPropsCustom, {}>{
     handleSelected = e => {
         this.renderSelectMenu();
     };
-    onOptionSelect=(value)=>{
+    onOptionSelect=(val)=>{
+        let {
+            onChange
+        } = this.props;
         this.setState({
-            value:value.value,
-            checkedLabel:value.children
+            value:val.value,
+            checkedLabel:val.children
         });
+        onChange(val.value,val.children);
     }
     // 获取option节点
     getChildOptions = ()=>{
