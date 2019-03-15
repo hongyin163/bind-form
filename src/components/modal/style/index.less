@@ -1,0 +1,89 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+.biz-modal {
+    // position: fixed;
+    // top: 0;
+    // right: 0;
+    // bottom: 0;
+    // left: 0;
+    // text-align: center;
+    // &_dialog {
+    //     position: fixed;
+    //     top: 50%;
+    //     left: 50%;
+    //     z-index: 10001;
+    //     display: inline-block;
+    //     width: 500px;
+    //     margin-top: -25%;
+    //     margin-left: -250px;
+    //     background: #fff;
+    // }
+    &_warpper {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 10001;
+        text-align: center;
+        &::before {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+            content: '';
+        }
+    }
+    &_dialog {        
+        display: inline-block;
+        width: 500px;
+        text-align: left;
+        vertical-align: middle;
+        background: #fff;
+    }
+    &_header {
+        padding: 16px 24px;
+        border-radius: @border-radius-base @border-radius-base 0 0;
+        background: @modal-header-bg;
+        color: @text-color;
+        border-bottom: @border-width-base @border-style-base @border-color-split;
+    }
+    &_title {
+        margin: 0;
+        font-size: @font-size-lg;
+        line-height: 22px;
+        font-weight: 500;
+        color: @heading-color;
+    }
+    &_body {
+        height: 400px;
+        padding: 24px;
+        font-size: @font-size-base;
+        line-height: @line-height-base;
+        word-wrap: break-word;        
+    }
+    &_footer {
+        border-top: @border-width-base @border-style-base @border-color-split;
+        padding: 10px 16px;
+        text-align: right;
+        border-radius: 0 0 @border-radius-base @border-radius-base;
+        button+button {
+            margin-left: 8px;
+            margin-bottom: 0;
+        }
+    }
+    &_mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: @modal-mask-bg;
+        height: 100%;
+        z-index: @zindex-modal-mask;
+        filter: ~'alpha(opacity=50)';
+        &-hidden {
+            display: none;
+        }
+    }
+}

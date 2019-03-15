@@ -10,7 +10,7 @@
 // @table-expanded-row-bg: #fbfbfb;
 // @table-padding-vertical: 16px;
 // @table-padding-horizontal: 16px;
-
+@table-row-toggle-bg:#F9FAFA;
 .biz-table{
     position: relative;
     width:100%; 
@@ -38,7 +38,10 @@
     }
     tbody tr.biz-table_row-hover,
     tbody tr:hover{
-        background-color:@table-row-hover-bg
+        // background-color:@table-row-hover-bg
+    }
+    tbody tr:nth-child(even){
+        background:@table-row-toggle-bg;
     }
     td{
         height: 46px;

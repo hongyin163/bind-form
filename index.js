@@ -39,6 +39,10 @@ import './src/components/select/style/index.less';
 import Button from './src/components/button';
 import './src/components/button/style/index.less';
 
+import Modal from './src/components/modal';
+import './src/components/modal/style/index.less';
+
+
 import Icon from './src/components/icon';
 
 export {
@@ -54,5 +58,6 @@ export {
     Tabs,
     Select,
     Button,
-    Icon
+    Icon,
+    Modal
 };
