@@ -52,7 +52,7 @@ export default class Select extends Component< SelectPropsCustom, {}>{
         let {
             onClick
         } = this.props;
-        onClick();
+        onClick && onClick();
     };
     onOptionSelect=(val)=>{
         let {
