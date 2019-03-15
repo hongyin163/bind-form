@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { createPortal } from 'react-dom';
+
 import Button, { ButtonType } from '../button';
 import Icon from '../icon';
 import { ModalProps } from './types';
+
+export { ModalProps }
 
 export default class Modal extends Component<ModalProps, any> {
     constructor(props, context) {
@@ -21,16 +25,33 @@ export default class Modal extends Component<ModalProps, any> {
     }
     public render() {
         const me = this;
-        return (
+        const {
+            visible,
+        } = me.props;
+        const {
+            style,
+            width = 500,
+        } = me.props;
+
+        if (!visible) {
+            return null;
+        }
+
+        return createPortal(
             <div className="biz-modal">
-                <div className="biz-modal_dialog">
-                    {me.renderHeader()}
-                    {me.renderBody()}
-                    {me.renderFooter()}
+                <div className="biz-modal_warpper">
+                    <div className="biz-modal_dialog" style={{
+                        width,
+                        ...style
+                    }}>
+                        {me.renderHeader()}
+                        {me.renderBody()}
+                        {me.renderFooter()}
+                    </div>
                 </div>
                 {me.renderMask()}
-            </div>
-        )
+            </div>, document.body,
+        );
     }
 
     public setVisible = (visible) => {
@@ -83,9 +104,10 @@ export default class Modal extends Component<ModalProps, any> {
         const me = this;
         const {
             children,
+            bodyStyle,
         } = me.props;
         return (
-            <div className="biz-modal_body">
+            <div className="biz-modal_body" style={bodyStyle}>
                 {children}
             </div>
         )
@@ -93,9 +115,10 @@ export default class Modal extends Component<ModalProps, any> {
     public renderFooter(): React.ReactNode {
         const me = this;
         const {
+            children,
             footer,
-            cancelText,
-            okText,
+            cancelText = '取消',
+            okText = '确定',
             okType,
             onOk,
             onCancel,
@@ -110,8 +133,8 @@ export default class Modal extends Component<ModalProps, any> {
             )
         }
         const okBtnType: ButtonType = okType || 'primary';
-        const okButton = onOk ? <Button type={okBtnType} onClick={onOk} {...okButtonProps} /> : null;
-        const cancelButton = onCancel ? <Button onClick={onCancel} {...cancelButtonProps} /> : null;
+        const okButton = onOk ? <Button type={okBtnType} onClick={onOk} {...okButtonProps}>{okText}</Button> : null;
+        const cancelButton = onCancel ? <Button onClick={onCancel} {...cancelButtonProps} >{cancelText}</Button> : null;
         return (
             <div className="biz-modal_footer">
                 <div className="biz-modal_buttons">

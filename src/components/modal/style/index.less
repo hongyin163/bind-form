@@ -1,9 +1,45 @@
 @import '../../style/themes/default';
 @import '../../style/mixins/index';
 .biz-modal {
-    &_dialog {
-        position: relative;
+    // position: fixed;
+    // top: 0;
+    // right: 0;
+    // bottom: 0;
+    // left: 0;
+    // text-align: center;
+    // &_dialog {
+    //     position: fixed;
+    //     top: 50%;
+    //     left: 50%;
+    //     z-index: 10001;
+    //     display: inline-block;
+    //     width: 500px;
+    //     margin-top: -25%;
+    //     margin-left: -250px;
+    //     background: #fff;
+    // }
+    &_warpper {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 10001;
+        text-align: center;
+        &::before {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+            content: '';
+        }
+    }
+    &_dialog {        
+        display: inline-block;
         width: 500px;
+        text-align: left;
+        vertical-align: middle;
+        background: #fff;
     }
     &_header {
         padding: 16px 24px;
@@ -20,10 +56,11 @@
         color: @heading-color;
     }
     &_body {
+        height: 400px;
         padding: 24px;
         font-size: @font-size-base;
         line-height: @line-height-base;
-        word-wrap: break-word;
+        word-wrap: break-word;        
     }
     &_footer {
         border-top: @border-width-base @border-style-base @border-color-split;
