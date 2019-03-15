@@ -9,6 +9,7 @@ import './style/index.less';
 export interface SelectPropsCustom extends  SelectProps{
     label?:string;
     className?: string;
+    onClick?:Function
 }
 
 export default class Select extends Component< SelectPropsCustom, {}>{
@@ -48,11 +49,16 @@ export default class Select extends Component< SelectPropsCustom, {}>{
     // 点击选择
     handleSelected = e => {
         this.renderSelectMenu();
+        let {
+            onClick
+        } = this.props;
+        onClick();
     };
     onOptionSelect=(val)=>{
         let {
             onChange
         } = this.props;
+        console.log(val);
         this.setState({
             value:val.value,
             checkedLabel:val.children
@@ -66,7 +72,9 @@ export default class Select extends Component< SelectPropsCustom, {}>{
         } = this.props;
         return React.Children.map(children,(child:React.ReactElement,i)=>{
             return React.cloneElement(child,{
-                onSelect:this.onOptionSelect
+                id:i,
+                onSelect:this.onOptionSelect,
+                className:''
             })
         })
     }
@@ -108,6 +116,9 @@ export default class Select extends Component< SelectPropsCustom, {}>{
     };
     // 关闭下拉列表
     handleCloseSelect = () => {
+        this.setState({
+            selected:true
+        });
         this.renderSelectMenu();
     };
     render() {

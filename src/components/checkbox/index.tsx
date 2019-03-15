@@ -39,6 +39,7 @@ class Checkbox extends Component<CheckboxProps, any> {
         return (
             <div className={cls} onClick={me.onCheck}>
                 <Icon type={type} />
+                {children}
             </div >
         );
     }
