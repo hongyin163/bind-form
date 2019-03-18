@@ -4,6 +4,9 @@ import './src/components/grid/style/index.less';
 import LoadingPage from './src/components/loading/page';
 import './src/components/loading/style/page.less';
 
+import Spin from './src/components/spin';
+import './src/components/spin/style/index.less';
+
 import Layout from './src/components/layout';
 import './src/components/layout/style/index.less';
 
@@ -31,8 +34,6 @@ import './src/components/pagination/style/index.less';
 import Tabs from './src/components/tabs';
 import './src/components/tabs/style/index.less';
 
-
-
 import Select from './src/components/select/select';
 import './src/components/select/style/index.less';
 
@@ -49,6 +50,7 @@ export {
     Layout,
     Loading,
     LoadingPage,
+    Spin,
     Input,
     Checkbox,
     Radio,

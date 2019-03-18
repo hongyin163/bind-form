@@ -24,7 +24,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        z-index: 10001;
+        z-index: @zindex-modal-mask+1;
         text-align: center;
         &::before {
             display: inline-block;
@@ -33,13 +33,20 @@
             vertical-align: middle;
             content: '';
         }
+        .centered {
+            display: inline-block;
+            vertical-align: middle;
+        }
     }
-    &_dialog {        
-        display: inline-block;
+    &_dialog {
+        position: fixed;
+        top: 20px;
         width: 500px;
         text-align: left;
-        vertical-align: middle;
         background: #fff;
+        border: 1px solid #E3E3E3;
+        box-shadow: 0 2px 4px 0 rgba(45, 45, 45, 0.10);
+        z-index: @zindex-modal-mask+1;
     }
     &_header {
         padding: 16px 24px;
@@ -60,7 +67,7 @@
         padding: 24px;
         font-size: @font-size-base;
         line-height: @line-height-base;
-        word-wrap: break-word;        
+        word-wrap: break-word;
     }
     &_footer {
         border-top: @border-width-base @border-style-base @border-color-split;

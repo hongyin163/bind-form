@@ -6,8 +6,6 @@ import Button, { ButtonType } from '../button';
 import Icon from '../icon';
 import { ModalProps } from './types';
 
-export { ModalProps }
-
 export default class Modal extends Component<ModalProps, any> {
     constructor(props, context) {
         super(props, context);
@@ -27,6 +25,7 @@ export default class Modal extends Component<ModalProps, any> {
         const me = this;
         const {
             visible,
+            centered = true,
         } = me.props;
         const {
             style,
@@ -39,16 +38,9 @@ export default class Modal extends Component<ModalProps, any> {
 
         return createPortal(
             <div className="biz-modal">
-                <div className="biz-modal_warpper">
-                    <div className="biz-modal_dialog" style={{
-                        width,
-                        ...style
-                    }}>
-                        {me.renderHeader()}
-                        {me.renderBody()}
-                        {me.renderFooter()}
-                    </div>
-                </div>
+                {
+                    centered ? me.renderCentered() : me.renderDialog()
+                }
                 {me.renderMask()}
             </div>, document.body,
         );
@@ -62,6 +54,42 @@ export default class Modal extends Component<ModalProps, any> {
     }
     public onClose = () => {
         this.setVisible(false);
+    }
+    public renderDialog() {
+        const me = this;
+        const {
+            style,
+            width = 500,
+        } = me.props;
+        return (
+            <div className="biz-modal_dialog" style={{
+                width,
+                ...style,
+            }}>
+                {me.renderHeader()}
+                {me.renderBody()}
+                {me.renderFooter()}
+            </div>
+        )
+    }
+    public renderCentered() {
+        const me = this;
+        const {
+            style,
+            width = 500,
+        } = me.props;
+        return (
+            <div className="biz-modal_warpper">
+                <div className="biz-modal_dialog centered" style={{
+                    width,
+                    ...style,
+                }}>
+                    {me.renderHeader()}
+                    {me.renderBody()}
+                    {me.renderFooter()}
+                </div>
+            </div>
+        )
     }
     public renderMask(): React.ReactNode {
         const me = this;
@@ -89,6 +117,9 @@ export default class Modal extends Component<ModalProps, any> {
             title,
             closable,
         } = me.props;
+        if (!title && !closable) {
+            return null;
+        }
         return (
             <div className="biz-modal_header">
                 {

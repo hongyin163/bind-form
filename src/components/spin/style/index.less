@@ -1,0 +1,38 @@
+
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+
+.make-spin(@size){
+    .indicator{
+        display:inline-block;
+        vertical-align: middle;
+        width: @size ;
+        height: @size;
+        background-image: url(../../style/svg/spinner.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: @size @size;   
+        line-height: @size;      
+    }
+    .text{
+        display:inline-block;
+        vertical-align: middle;
+        font-size: 12px;
+        line-height:  @size;  
+    }
+}
+
+
+.biz-spin{
+    display:block;
+    text-align: center;
+    .make-spin(40px);
+}
+
+// .biz-spin-sm{
+//     .make-spin(14px);
+// }
+
+// .biz-spin-lg{
+//     .make-spin(32px);
+// }
