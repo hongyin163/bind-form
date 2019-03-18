@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom';
-
+import classNames from 'classnames';
 import Button, { ButtonType } from '../button';
 import Icon from '../icon';
 import { ModalProps } from './types';
@@ -25,19 +25,20 @@ export default class Modal extends Component<ModalProps, any> {
         const me = this;
         const {
             visible,
-            centered = true,
-        } = me.props;
+        } = me.state;
+
         const {
-            style,
-            width = 500,
+            centered = true,
+            className,
         } = me.props;
 
         if (!visible) {
             return null;
         }
 
+        const cls = classNames("biz-modal", className);
         return createPortal(
-            <div className="biz-modal">
+            <div className={cls}>
                 {
                     centered ? me.renderCentered() : me.renderDialog()
                 }
@@ -104,6 +105,7 @@ export default class Modal extends Component<ModalProps, any> {
         if (!mask) {
             return null;
         }
+        
         const maskProps: React.HTMLAttributes<any> = {};
         if (maskClosable) {
             maskProps.onClick = me.onClose;

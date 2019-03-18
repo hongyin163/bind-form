@@ -24,19 +24,29 @@ function gerRoot(id) {
     return root;
 }
 
-export const show = (text) => {
+let isShow = false;
+
+export const show = (tip) => {
+    if (isShow) {
+        return true;
+    }
+    isShow = true;
     let root = gerRoot('biz-loading');
     return ReactDOM.render((
         <div className="biz-loading">
-            <Spin text={text} />
+            <Spin tip={tip} />
         </div>
     ), root);
 };
 
 
 export const hide = () => {
+    if(!isShow){
+        return;
+    }
     let root = gerRoot('biz-loading');
     ReactDOM.unmountComponentAtNode(root);
+    isShow = false;
     return;
 };
 
