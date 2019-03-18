@@ -61,6 +61,7 @@ export default class Modal extends Component<ModalProps, any> {
         });
     }
     public onClose = () => {
+        console.log(111111222);
         this.setVisible(false);
     }
     public renderMask(): React.ReactNode {
