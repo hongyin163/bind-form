@@ -1,90 +1,91 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import {SelectProps } from './interface';
 import classnames from 'classnames';
+import { SelectProps } from './interface';
 import Option from './option';
 import './style/index.less';
 
-export interface SelectPropsCustom extends  SelectProps{
-    label?:string;
+export interface SelectPropsCustom extends SelectProps {
+    label?: string;
     className?: string;
-    onClick?:Function
+    onClick?: () => void;
+    children?: React.ReactElement[];
 }
 
-export default class Select extends Component< SelectPropsCustom, {}>{
-    static Option: typeof Option;
+export default class Select extends Component<SelectPropsCustom, {}>{
+    public static Option: typeof Option;
     public dropdownContainer: HTMLDivElement;
 
-    state = {
+    public state = {
         selected: false,
-        value:'',
-        checkedLabel:''
+        value: '',
+        checkedLabel: '',
     };
-    componentDidMount(){
+    public componentDidMount() {
         this.setDefaultValue();
     }
-    setDefaultValue = ()=>{
-        let me = this;
-        let {
+    public setDefaultValue = () => {
+        const me = this;
+        const {
             children,
-            defaultValue
+            defaultValue,
         } = this.props;
-        if(defaultValue){
-            React.Children.map(children,(child:React.ReactElement,i)=>{
-                if(defaultValue == child.props.value){
+        if (defaultValue) {
+            React.Children.map(children, (child: React.ReactElement, i) => {
+                if (defaultValue == child.props.value) {
                     me.setState({
-                        value:child.props.value,
-                        checkedLabel:child.props.children
+                        value: child.props.value,
+                        checkedLabel: child.props.children,
                     });
                 }
             })
-        }else{
+        } else {
             me.setState({
-                value:children[0].props.value,
-                checkedLabel:children[0].props.children
+                value: children[0].props.value,
+                checkedLabel: children[0].props.children,
             });
         }
     }
     // 点击选择
-    handleSelected = e => {
+    public handleSelected = e => {
         this.renderSelectMenu();
-        let {
-            onClick
+        const {
+            onClick,
         } = this.props;
         onClick && onClick();
     };
-    onOptionSelect=(val)=>{
-        let {
-            onChange
+    public onOptionSelect = (val) => {
+        const {
+            onChange,
         } = this.props;
         console.log(val);
         this.setState({
-            value:val.value,
-            checkedLabel:val.children
+            value: val.value,
+            checkedLabel: val.children,
         });
-        onChange(val.value,val.children);
+        onChange(val.value, val.children);
     }
     // 获取option节点
-    getChildOptions = ()=>{
-        let {
-            children
+    public getChildOptions = () => {
+        const {
+            children,
         } = this.props;
-        return React.Children.map(children,(child:React.ReactElement,i)=>{
-            return React.cloneElement(child,{
-                id:i,
-                onSelect:this.onOptionSelect,
-                className:''
+        return React.Children.map(children, (child: React.ReactElement, i) => {
+            return React.cloneElement(child, {
+                id: i,
+                onSelect: this.onOptionSelect,
+                className: '',
             })
         })
     }
     // 渲染option
-    renderOption = (left: number, top: number, width: number) => {
-        let me=this;
-        let {
-            selected
+    public renderOption = (left: number, top: number, width: number) => {
+        const me = this;
+        const {
+            selected,
         } = this.state;
-        let childs = this.getChildOptions();
+        const childs = this.getChildOptions();
         return (
             <div className="curtain" onClick={this.handleCloseSelect} style={{ display: selected ? 'none' : 'block' }}>
                 <div
@@ -97,7 +98,7 @@ export default class Select extends Component< SelectPropsCustom, {}>{
         );
     };
     // 渲染下拉列表
-    renderSelectMenu = () => {
+    public renderSelectMenu = () => {
         this.setState({
             selected: !this.state.selected,
         });
@@ -105,34 +106,38 @@ export default class Select extends Component< SelectPropsCustom, {}>{
             this.dropdownContainer = document.createElement('div');
         }
 
-        let dom: any = ReactDOM.findDOMNode(this);
-        let { left, top, width, height } = dom.getBoundingClientRect();
+        const dom: any = ReactDOM.findDOMNode(this);
+        const { left, top, width, height } = dom.getBoundingClientRect();
 
         document.body.appendChild(this.dropdownContainer);
         ReactDOM.render(
             this.renderOption(left, top + height + 3, width),
-            this.dropdownContainer
+            this.dropdownContainer,
         );
     };
     // 关闭下拉列表
-    handleCloseSelect = () => {
+    public handleCloseSelect = () => {
         this.setState({
-            selected:true
+            selected: true,
         });
         this.renderSelectMenu();
     };
-    render() {
-        let { 
+    public render() {
+        const {
             className,
-            label = ''
+            label = '',
+            style = {},
         } = this.props;
-        let { selected,checkedLabel } = this.state;
+        const { selected, checkedLabel } = this.state;
         return (
-            <div className={classnames('biz-select', className, { 'biz-selected': selected })} ref="bizSelect">
+            <div className={classnames('biz-select', className, { 'biz-selected': selected })}
+                ref="bizSelect"
+                style={style}
+            >
                 {
-                    label?(
+                    label ? (
                         <div className="biz-select-label">{label}</div>
-                    ):''
+                    ) : ''
                 }
                 <div
                     className={classnames('biz-select-selection')}
@@ -141,7 +146,7 @@ export default class Select extends Component< SelectPropsCustom, {}>{
                     <div className="biz-select-selection_rendered">
                         <div className={classnames('biz-select-selection-selected-value')}>
                             {checkedLabel}
-						</div>
+                        </div>
                         <span unselectable="on" className="biz-select-arrow">
                             <i className="biz-select-arrow-icon" />
                         </span>
