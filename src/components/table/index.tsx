@@ -304,6 +304,7 @@ class Table<T> extends Component<TableProps<T>, any> {
             columns,
             dataSource,
             rowSelection,
+            showHeader = true,
         } = me.props;
         let cols = columns.filter(p => p.fixed === fixed);
         if (cols.length === 0) {
@@ -313,11 +314,15 @@ class Table<T> extends Component<TableProps<T>, any> {
 
         return (
             <table>
-                <thead>
-                    <tr>
-                        {me.renderHeader(cols)}
-                    </tr>
-                </thead>
+                {
+                    showHeader && (
+                        <thead>
+                            <tr>
+                                {me.renderHeader(cols)}
+                            </tr>
+                        </thead>
+                    )
+                }
                 <tbody >
                     {me.renderBody(cols, dataSource)}
                 </tbody>
@@ -364,15 +369,20 @@ class Table<T> extends Component<TableProps<T>, any> {
         const {
             columns,
             dataSource,
+            showHeader = true,
         } = me.props;
         const cols = me.appendSelectionCol(columns);
         return (
             <table>
-                <thead>
-                    <tr>
-                        {me.renderHeader(cols)}
-                    </tr>
-                </thead>
+                {
+                    showHeader && (
+                        <thead>
+                            <tr>
+                                {me.renderHeader(cols)}
+                            </tr>
+                        </thead>
+                    )
+                }
                 <tbody  >
                     {me.renderBody(cols, dataSource)}
                 </tbody>

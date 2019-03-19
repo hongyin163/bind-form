@@ -49,20 +49,26 @@ export default class Modal extends Component<ModalProps, any> {
 
     public setVisible = (visible) => {
         const me = this;
-        const {
-            afterClose = () => null,
-        } = me.props;
-        
-        me.setState({
-            visible,
-        }, () => {
-            if (!me.state.visible) {
-                afterClose();
-            }
+        // const {
+        //     afterClose = () => null,
+        // } = me.props;
+        return new Promise((resolve) => {
+            me.setState({
+                visible,
+            }, resolve);
         });
     }
-    public onClose = () => {
-        this.setVisible(false);
+    public onClose = (e) => {
+        const me = this;
+        const {
+            onCancel = (e) => e,
+            afterClose = () => null,
+        } = me.props;
+
+        me.setVisible(false).then(() => {
+            onCancel(e);
+            afterClose();
+        });
     }
     public renderDialog() {
         const me = this;
@@ -163,8 +169,8 @@ export default class Modal extends Component<ModalProps, any> {
             okType,
             onOk,
             onCancel,
-            okButtonProps,
-            cancelButtonProps,
+            okButtonProps = {},
+            cancelButtonProps = {},
         } = me.props;
         if (footer) {
             return (
@@ -173,9 +179,15 @@ export default class Modal extends Component<ModalProps, any> {
                 </div>
             )
         }
+
         const okBtnType: ButtonType = okType || 'primary';
-        const okButton = onOk ? <Button type={okBtnType} onClick={onOk} {...okButtonProps}>{okText}</Button> : null;
-        const cancelButton = onCancel ? <Button onClick={onCancel} {...cancelButtonProps} >{cancelText}</Button> : null;
+        const okButton = okText ? <Button type={okBtnType} onClick={onOk} {...okButtonProps}>{okText}</Button> : null;
+        const cancelButton = cancelText ? <Button onClick={me.onClose} {...cancelButtonProps} >{cancelText}</Button> : null;
+
+        if (!okButton && !cancelButton) {
+            return null;
+        }
+
         return (
             <div className="biz-modal_footer">
                 <div className="biz-modal_buttons">
