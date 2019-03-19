@@ -34,7 +34,7 @@ import './src/components/pagination/style/index.less';
 import Tabs from './src/components/tabs';
 import './src/components/tabs/style/index.less';
 
-import Select from './src/components/select/select';
+import Select from './src/components/select';
 import './src/components/select/style/index.less';
 
 import Button from './src/components/button';
