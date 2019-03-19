@@ -49,13 +49,26 @@ export default class Modal extends Component<ModalProps, any> {
 
     public setVisible = (visible) => {
         const me = this;
-        me.setState({
-            visible,
+        // const {
+        //     afterClose = () => null,
+        // } = me.props;
+        return new Promise((resolve) => {
+            me.setState({
+                visible,
+            }, resolve);
         });
     }
-    public onClose = () => {
-        console.log(111111222);
-        this.setVisible(false);
+    public onClose = (e) => {
+        const me = this;
+        const {
+            onCancel = (e) => e,
+            afterClose = () => null,
+        } = me.props;
+
+        me.setVisible(false).then(() => {
+            onCancel(e);
+            afterClose();
+        });
     }
     public renderDialog() {
         const me = this;
@@ -105,7 +118,7 @@ export default class Modal extends Component<ModalProps, any> {
         if (!mask) {
             return null;
         }
-        
+
         const maskProps: React.HTMLAttributes<any> = {};
         if (maskClosable) {
             maskProps.onClick = me.onClose;
@@ -156,8 +169,8 @@ export default class Modal extends Component<ModalProps, any> {
             okType,
             onOk,
             onCancel,
-            okButtonProps,
-            cancelButtonProps,
+            okButtonProps = {},
+            cancelButtonProps = {},
         } = me.props;
         if (footer) {
             return (
@@ -166,9 +179,15 @@ export default class Modal extends Component<ModalProps, any> {
                 </div>
             )
         }
+
         const okBtnType: ButtonType = okType || 'primary';
-        const okButton = onOk ? <Button type={okBtnType} onClick={onOk} {...okButtonProps}>{okText}</Button> : null;
-        const cancelButton = onCancel ? <Button onClick={onCancel} {...cancelButtonProps} >{cancelText}</Button> : null;
+        const okButton = okText ? <Button type={okBtnType} onClick={onOk} {...okButtonProps}>{okText}</Button> : null;
+        const cancelButton = cancelText ? <Button onClick={me.onClose} {...cancelButtonProps} >{cancelText}</Button> : null;
+
+        if (!okButton && !cancelButton) {
+            return null;
+        }
+
         return (
             <div className="biz-modal_footer">
                 <div className="biz-modal_buttons">
