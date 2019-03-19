@@ -49,12 +49,19 @@ export default class Modal extends Component<ModalProps, any> {
 
     public setVisible = (visible) => {
         const me = this;
+        const {
+            afterClose = () => null,
+        } = me.props;
+        
         me.setState({
             visible,
+        }, () => {
+            if (!me.state.visible) {
+                afterClose();
+            }
         });
     }
     public onClose = () => {
-        console.log(111111222);
         this.setVisible(false);
     }
     public renderDialog() {
@@ -105,7 +112,7 @@ export default class Modal extends Component<ModalProps, any> {
         if (!mask) {
             return null;
         }
-        
+
         const maskProps: React.HTMLAttributes<any> = {};
         if (maskClosable) {
             maskProps.onClick = me.onClose;
