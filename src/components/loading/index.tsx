@@ -4,13 +4,19 @@ import Spin from '../spin';
 
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-export default function Loading({ error, text = '加载中', pastDelay }) {
+interface LoadingProps {
+    error?: string;
+    tip?: string;
+    pastDelay?: number;
+}
+
+export default function Loading({ error, tip = '加载中', pastDelay }: LoadingProps = {}) {
     if (error) {
         return <div>Error</div>;
     } else if (pastDelay) {
-        return <Spin text={text} />;
+        return <Spin tip={tip} />;
     } else {
-        return <Spin text={text} />;
+        return <Spin tip={tip} />;
     }
 }
 
@@ -31,7 +37,7 @@ export const show = (tip) => {
         return true;
     }
     isShow = true;
-    let root = gerRoot('biz-loading');
+    const root = gerRoot('biz-loading');
     return ReactDOM.render((
         <div className="biz-loading">
             <Spin tip={tip} />
@@ -39,12 +45,11 @@ export const show = (tip) => {
     ), root);
 };
 
-
 export const hide = () => {
-    if(!isShow){
+    if (!isShow) {
         return;
     }
-    let root = gerRoot('biz-loading');
+    const root = gerRoot('biz-loading');
     ReactDOM.unmountComponentAtNode(root);
     isShow = false;
     return;
