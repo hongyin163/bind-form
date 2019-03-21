@@ -43,6 +43,8 @@ import './src/components/button/style/index.less';
 import Modal from './src/components/modal';
 import './src/components/modal/style/index.less';
 
+import BizSelect from './src/components/biz-select';
+import './src/components/biz-select/style/index.less';
 
 import Icon from './src/components/icon';
 
@@ -61,5 +63,6 @@ export {
     Select,
     Button,
     Icon,
-    Modal
+    Modal,
+    BizSelect
 };
