@@ -2,10 +2,23 @@
 @import '../../style/mixins/index';
 
 .biz-loading{
+    position: fixed;
+    top:50%;
+    left: 50%;
+    z-index: 2000;
+    width: 102px;
+    height: 40px;
+    margin-top: -20px;
+    margin-left: -51px;
+    opacity: 0.6;
+    background: #000000;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.20);
+    border-radius: 2px;
     .biz-spin{
-        position: fixed;
-        top:50%;
-        left: 50%;
-        z-index: 2000;
+        color: #fff;
+        .indicator{
+            width: 20px;
+            margin-right: 6px;
+        }
     }
 }

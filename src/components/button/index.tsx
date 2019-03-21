@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import classNames from 'classnames';
+import React, { Component } from 'react';
 
 // import './index.less';
 /**
@@ -13,27 +13,28 @@ export interface BaseButtonProps {
     type?: ButtonType;
     className?: string;
     children?: React.ReactNode;
-    onClick?: Function,
+    onClick?: (e) => any,
     disabled?: boolean,
     cStyle?: {}
 }
 
 class Button extends Component<BaseButtonProps, any>{
-    handleClick = () => {
-        let {
-            onClick
+    public handleClick = (e) => {
+        const {
+            onClick,
         } = this.props;
         if (onClick) {
-            onClick();
+            onClick(e);
         }
     }
-    render() {
-        let {
+    public render() {
+        const {
             cStyle,
             children,
             type = '',
             className = '',
-            disabled = false
+            disabled = false,
+            ...rest
         } = this.props;
         return (
             <button
@@ -41,6 +42,7 @@ class Button extends Component<BaseButtonProps, any>{
                 className={classNames('ats-btn', { [`ats-btn__${type}`]: type }, className)}
                 style={cStyle}
                 onClick={this.handleClick}
+                {...rest}
             >
                 {children}
             </button>
