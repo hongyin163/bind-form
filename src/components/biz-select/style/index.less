@@ -44,13 +44,17 @@
         display: block;
         float: right;
     }
-    &-arrow-icon {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background: url('../image/down.png') no-repeat center center;
-        background-size: 100%;
-        transition: all 0.3s ease;
+    // &-arrow-icon {
+    //     display: inline-block;
+    //     width: 8px;
+    //     height: 8px;
+    //     // background: url('../image/down.png') no-repeat center center;
+    //     background-size: 100%;
+    //     transition: all 0.3s ease;
+    // }
+    .biz-icon-arrow-down{
+        font-size: 12px;
+        color: #BABBBA;
     }
     &-label {
         float: left;
@@ -63,8 +67,8 @@
 
 .biz-selected {
     border: 1px solid #40a9ff;
-    .biz-select-arrow-icon {
-        transform: rotateZ(-180deg);
+    .biz-icon-arrow-down {
+        transform: rotateZ(-100deg);
     }
 }
 
