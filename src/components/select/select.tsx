@@ -141,7 +141,7 @@ export default class Select extends Component<SelectPropsCustom, {}>{
                 }
                 <div
                     className={classnames('biz-select-selection')}
-                    onClick={this.handleSelected.bind(this, event)}
+                    onClick={this.handleSelected}
                 >
                     <div className="biz-select-selection_rendered">
                         <div className={classnames('biz-select-selection-selected-value')}>

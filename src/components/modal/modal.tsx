@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import Button, { ButtonType } from '../button';
 import Icon from '../icon';
+import Animate from 'rc-animate';
 import { ModalProps } from './types';
 
 export default class Modal extends Component<ModalProps, any> {
@@ -20,31 +21,6 @@ export default class Modal extends Component<ModalProps, any> {
             visible,
         } = props;
         me.setVisible(visible);
-    }
-    public render() {
-        const me = this;
-        const {
-            visible,
-        } = me.state;
-
-        const {
-            centered = true,
-            className,
-        } = me.props;
-
-        if (!visible) {
-            return null;
-        }
-
-        const cls = classNames("biz-modal", className);
-        return createPortal(
-            <div className={cls}>
-                {
-                    centered ? me.renderCentered() : me.renderDialog()
-                }
-                {me.renderMask()}
-            </div>, document.body,
-        );
     }
 
     public setVisible = (visible) => {
@@ -196,6 +172,39 @@ export default class Modal extends Component<ModalProps, any> {
                 </div>
             </div>
         )
+    }
+
+    public render() {
+        const me = this;
+        const {
+            visible,
+        } = me.state;
+
+        const {
+            centered = true,
+            className,            
+        } = me.props;
+
+        // if (!visible) {
+        //     return null;
+        // }
+
+        const cls = classNames("biz-modal", className);
+        return createPortal(
+            <div data-show={visible} className={cls}>
+                <Animate
+                    transitionName="zoom"
+                >
+                    {
+                        visible ? (
+                            centered ? me.renderCentered() : me.renderDialog()
+                        ) : null
+                    }
+                </Animate>
+                {visible && me.renderMask()}
+            </div>,
+            document.body,
+        );
     }
 
 }
