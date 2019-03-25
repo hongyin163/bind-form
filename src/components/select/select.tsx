@@ -1,7 +1,7 @@
+import classnames from 'classnames';
+import Animate from 'rc-animate';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import classnames from 'classnames';
 import { SelectProps } from './interface';
 import Option from './option';
 import './style/index.less';
@@ -13,6 +13,30 @@ export interface SelectPropsCustom extends SelectProps {
     children?: React.ReactElement[];
 }
 
+
+
+class List extends Component<any> {
+    componentWillMount() {
+        document.addEventListener('click', this.close);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('click', this.close);
+    }
+    close = (e) => {
+        const me = this;
+        const {
+            onClose = () => null,
+        } = me.props;
+        onClose(e);
+    }
+    render() {
+        return this.props.children;
+    }
+}
+
+
+
+// tslint:disable-next-line: max-classes-per-file
 export default class Select extends Component<SelectPropsCustom, {}>{
     public static Option: typeof Option;
     public dropdownContainer: HTMLDivElement;
@@ -23,17 +47,22 @@ export default class Select extends Component<SelectPropsCustom, {}>{
         checkedLabel: '',
     };
     public componentDidMount() {
-        this.setDefaultValue();
+        this.setDefaultValue(this.props);
     }
-    public setDefaultValue = () => {
+    public componentWillReceiveProps(nextProps) {
+        this.setDefaultValue(nextProps);
+    }
+    public setDefaultValue = (props) => {
         const me = this;
         const {
             children,
+            value,
             defaultValue,
-        } = this.props;
-        if (defaultValue) {
+        } = props;
+        const currentValue = value || defaultValue;
+        if (currentValue) {
             React.Children.map(children, (child: React.ReactElement, i) => {
-                if (defaultValue == child.props.value) {
+                if (currentValue == child.props.value) {
                     me.setState({
                         value: child.props.value,
                         checkedLabel: child.props.children,
@@ -48,23 +77,30 @@ export default class Select extends Component<SelectPropsCustom, {}>{
         }
     }
     // 点击选择
-    public handleSelected = e => {
-        this.renderSelectMenu();
+    public handleSelected = (e) => {
+        const me = this;
         const {
-            onClick,
+            onClick = () => null,
         } = this.props;
-        onClick && onClick();
+
+        me.setState({
+            selected: true,
+        }, () => {
+            onClick();
+        })
     };
     public onOptionSelect = (val) => {
         const {
-            onChange,
+            onChange = () => null,
         } = this.props;
-        console.log(val);
+
         this.setState({
+            selected: false,
             value: val.value,
             checkedLabel: val.children,
+        }, () => {
+            onChange(val.value, val.children);
         });
-        onChange(val.value, val.children);
     }
     // 获取option节点
     public getChildOptions = () => {
@@ -80,47 +116,65 @@ export default class Select extends Component<SelectPropsCustom, {}>{
         })
     }
     // 渲染option
-    public renderOption = (left: number, top: number, width: number) => {
+    public renderOption = () => {
         const me = this;
+
         const {
             selected,
-        } = this.state;
+        } = me.state;
+        // tslint:disable-next-line: one-variable-per-declaration
+        let top = 0, left = 0, width = 0, height = 0;
+        if (selected) {
+            const dom: any = ReactDOM.findDOMNode(this);
+            if (!dom) {
+                return null;
+            }
+            const node = dom.getBoundingClientRect();
+            left = node.left;
+            top = node.top;
+            height = node.height;
+            width = node.width;
+            top = top + height + 3;
+        }
         const childs = this.getChildOptions();
         return (
-            <div className="curtain" onClick={this.handleCloseSelect} style={{ display: selected ? 'none' : 'block' }}>
-                <div
-                    className='biz-select-dropdown'
-                    style={{ width, top, left }}
-                >
-                    {childs}
-                </div>
-            </div>
+            <Animate
+                transitionName="slide-up"
+            >
+                {
+                    selected && (
+                        <List onClose={me.handleCloseSelect}>
+                            <div
+                                className='biz-select-dropdown'
+                                style={{ width, top, left }}
+                            >
+                                {childs}
+                            </div>
+                        </List>
+                    )
+                }
+            </Animate>
         );
     };
     // 渲染下拉列表
     public renderSelectMenu = () => {
-        this.setState({
-            selected: !this.state.selected,
-        });
+        const me = this;
+        const id = 'biz-select';
         if (!this.dropdownContainer) {
-            this.dropdownContainer = document.createElement('div');
+            const root = document.createElement('div');
+            root.id = id;
+            this.dropdownContainer = root;
+            document.body.appendChild(this.dropdownContainer);
         }
-
-        const dom: any = ReactDOM.findDOMNode(this);
-        const { left, top, width, height } = dom.getBoundingClientRect();
-
-        document.body.appendChild(this.dropdownContainer);
-        ReactDOM.render(
-            this.renderOption(left, top + height + 3, width),
-            this.dropdownContainer,
-        );
+        return ReactDOM.createPortal(
+            me.renderOption(),
+            this.dropdownContainer)
     };
     // 关闭下拉列表
     public handleCloseSelect = () => {
         this.setState({
-            selected: true,
+            selected: false,
         });
-        this.renderSelectMenu();
     };
     public render() {
         const {
@@ -129,19 +183,15 @@ export default class Select extends Component<SelectPropsCustom, {}>{
             style = {},
         } = this.props;
         const { selected, checkedLabel } = this.state;
+
         return (
             <div className={classnames('biz-select', className, { 'biz-selected': selected })}
                 ref="bizSelect"
                 style={style}
             >
-                {
-                    label ? (
-                        <div className="biz-select-label">{label}</div>
-                    ) : ''
-                }
                 <div
                     className={classnames('biz-select-selection')}
-                    onClick={this.handleSelected}
+                    onClickCapture={this.handleSelected}
                 >
                     <div className="biz-select-selection_rendered">
                         <div className={classnames('biz-select-selection-selected-value')}>
@@ -152,6 +202,7 @@ export default class Select extends Component<SelectPropsCustom, {}>{
                         </span>
                     </div>
                 </div>
+                {this.renderSelectMenu()}
             </div>
         );
     }

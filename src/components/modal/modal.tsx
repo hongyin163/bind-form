@@ -34,7 +34,9 @@ export default class Modal extends Component<ModalProps, any> {
             }, resolve);
         });
     }
-    public onClose = (e) => {
+    public onClose = (e: React.MouseEvent<any, any>) => {
+        e.nativeEvent && e.nativeEvent.stopImmediatePropagation();
+        e.stopPropagation();
         const me = this;
         const {
             onCancel = (e) => e,
@@ -182,7 +184,7 @@ export default class Modal extends Component<ModalProps, any> {
 
         const {
             centered = true,
-            className,            
+            className,
         } = me.props;
 
         // if (!visible) {
