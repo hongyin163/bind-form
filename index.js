@@ -13,6 +13,10 @@ import './src/components/layout/style/index.less';
 import Input from './src/components/input';
 import './src/components/input/style/index.less';
 
+import InputTag from './src/components/input-tag';
+import './src/components/input-tag/style/index.less';
+
+
 import Checkbox from './src/components/checkbox';
 import './src/components/checkbox/style/index.less';
 
@@ -37,6 +41,11 @@ import './src/components/tabs/style/index.less';
 import Select from './src/components/select';
 import './src/components/select/style/index.less';
 
+import SelectPanel from './src/components/select-panel';
+import './src/components/select-panel/style/index.less';
+
+
+
 import Button from './src/components/button';
 import './src/components/button/style/index.less';
 
@@ -54,6 +63,7 @@ export {
     LoadingPage,
     Spin,
     Input,
+    InputTag,
     Checkbox,
     Radio,
     Table,
@@ -61,6 +71,7 @@ export {
     Form,
     Tabs,
     Select,
+    SelectPanel,
     Button,
     Icon,
     Modal,

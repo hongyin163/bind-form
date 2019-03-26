@@ -10,9 +10,8 @@ interface OptionProp {
 
 export default class Option extends Component<OptionProp, {}> {
     public onSelect = (e) => {
-        debugger;
         e.nativeEvent.stopImmediatePropagation();
-        // e.stopPropagation();
+        e.stopPropagation();
         const {
             onSelect,
         } = this.props;
