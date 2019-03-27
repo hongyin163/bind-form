@@ -5,6 +5,10 @@ import Icon from '../icon';
 import { ColumnProps, TableProps } from './interface';
 
 class Table<T> extends Component<TableProps<T>, any> {
+    public static defaultProps = {
+        dataSource: [],
+        columns: [],
+    }
     constructor(props, context) {
         super(props, context);
         const me = this;
@@ -413,10 +417,13 @@ class Table<T> extends Component<TableProps<T>, any> {
     }
     public render() {
         const me = this;
+        const {
+            className,
+        } = me.props;
         const scrollStyle = me.getScrollStyle();
-
+        const cls = classNames('biz-table', className)
         return (
-            <div className="biz-table">
+            <div className={cls}>
                 <div className="biz-table_content" onMouseOver={me.onMouseOverRow} onMouseOut={me.onMouseOutRow}>
                     <div className="biz-table_scroll" style={{
                         ...scrollStyle,
