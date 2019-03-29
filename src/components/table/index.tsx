@@ -139,6 +139,8 @@ class Table<T> extends Component<TableProps<T>, any> {
                     colSpan={col.colSpan || 1}
                     style={{
                         width: col.width || (col.fixed ? 100 : 'auto'),
+                        maxWidth: col.width || (col.fixed ? 100 : 'auto'),
+                        minWidth: col.width || (col.fixed ? 100 : 'auto'),
                     }}
                     {...thProps}
                 >
@@ -150,6 +152,10 @@ class Table<T> extends Component<TableProps<T>, any> {
         })
     }
     public renderBody = (columns: Array<ColumnProps<T>>, dataSource: T[]) => {
+        const me = this;
+        const {
+            showHeader
+        } = me.props;
         const {
             hoverRowIndex,
         } = this.state;
@@ -162,8 +168,19 @@ class Table<T> extends Component<TableProps<T>, any> {
                     const val = item[col.dataIndex];
                     value = typeof val === 'object' ? JSON.stringify(val) : val;
                 }
+                let tdStyle = {};
+                if (!showHeader && i === 0) {
+                    tdStyle = {
+                        width: col.width || (col.fixed ? 100 : 'auto'),
+                        maxWidth: col.width || (col.fixed ? 100 : 'auto'),
+                        minWidth: col.width || (col.fixed ? 100 : 'auto'),
+                    }
+                }
                 return (
-                    <td key={col.dataIndex}>
+                    <td
+                        key={col.dataIndex}
+                        style={tdStyle}
+                    >
                         {value}
                     </td>
                 )
@@ -307,17 +324,23 @@ class Table<T> extends Component<TableProps<T>, any> {
         const {
             columns,
             dataSource,
-            rowSelection,
             showHeader = true,
         } = me.props;
         let cols = columns.filter(p => p.fixed === fixed);
         if (cols.length === 0) {
             return null;
         }
-        cols = me.appendSelectionCol(cols);
+
+        if (fixed === 'left') {
+            cols = me.appendSelectionCol(cols);
+        }
+
+        const width = cols.reduce((pre, col) => {
+            return pre + Number(col.width || 100);
+        }, 0);
 
         return (
-            <table>
+            <table style={{ width }}>
                 {
                     showHeader && (
                         <thead>
@@ -368,6 +391,21 @@ class Table<T> extends Component<TableProps<T>, any> {
             hoverRowIndex: -1,
         })
     }
+    public buildFixedColums(columns = []) {
+        const fixedLeft = [];
+        const fixedRight = [];
+        const normal = [];
+        columns.forEach((col) => {
+            if (col.fixed === 'left') {
+                fixedLeft.push(col);
+            } else if (col.fixed === 'right') {
+                fixedRight.push(col);
+            } else {
+                normal.push(col);
+            }
+        });
+        return fixedLeft.concat(normal).concat(fixedRight);
+    }
     public renderTable() {
         const me = this;
         const {
@@ -375,20 +413,21 @@ class Table<T> extends Component<TableProps<T>, any> {
             dataSource,
             showHeader = true,
         } = me.props;
-        const cols = me.appendSelectionCol(columns);
+        const cols = me.buildFixedColums(columns);
+        const allCols = me.appendSelectionCol(cols);
         return (
             <table>
                 {
                     showHeader && (
                         <thead>
                             <tr>
-                                {me.renderHeader(cols)}
+                                {me.renderHeader(allCols)}
                             </tr>
                         </thead>
                     )
                 }
                 <tbody  >
-                    {me.renderBody(cols, dataSource)}
+                    {me.renderBody(allCols, dataSource)}
                 </tbody>
             </table>
         )
@@ -424,7 +463,11 @@ class Table<T> extends Component<TableProps<T>, any> {
         const cls = classNames('biz-table', className)
         return (
             <div className={cls}>
-                <div className="biz-table_content" onMouseOver={me.onMouseOverRow} onMouseOut={me.onMouseOutRow}>
+                <div
+                    className="biz-table_content"
+                    onMouseOver={me.onMouseOverRow}
+                    onMouseOut={me.onMouseOutRow}                    
+                >
                     <div className="biz-table_scroll" style={{
                         ...scrollStyle,
                     }}>
