@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Spin from '../spin';
 
+let DISABLE = false;
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 interface LoadingProps {
@@ -33,6 +34,9 @@ function gerRoot(id) {
 let isShow = false;
 
 export const show = (tip) => {
+    if (DISABLE) {
+        return;
+    }
     if (isShow) {
         return true;
     }
@@ -46,6 +50,9 @@ export const show = (tip) => {
 };
 
 export const hide = () => {
+    if (DISABLE) {
+        return;
+    }
     if (!isShow) {
         return;
     }
@@ -55,5 +62,11 @@ export const hide = () => {
     return;
 };
 
+export const setDisalbe = (disable) => {
+    DISABLE = disable;
+    return;
+};
+
 Loading.show = show;
 Loading.hide = hide;
+Loading.setDisalbe = setDisalbe;

@@ -4,10 +4,12 @@ import React, { Component } from 'react';
 import Icon from '../icon';
 import { ColumnProps, TableProps } from './interface';
 
+
 class Table<T> extends Component<TableProps<T>, any> {
     public static defaultProps = {
         dataSource: [],
         columns: [],
+        scroll: {},
     }
     constructor(props, context) {
         super(props, context);
@@ -458,15 +460,20 @@ class Table<T> extends Component<TableProps<T>, any> {
         const me = this;
         const {
             className,
+            scroll: {
+                onScroll,
+            },
         } = me.props;
         const scrollStyle = me.getScrollStyle();
         const cls = classNames('biz-table', className)
+        const scrollProps = onScroll ? { onScroll } : {};
         return (
             <div className={cls}>
                 <div
                     className="biz-table_content"
                     onMouseOver={me.onMouseOverRow}
-                    onMouseOut={me.onMouseOutRow}                    
+                    onMouseOut={me.onMouseOutRow}
+                    {...scrollProps}
                 >
                     <div className="biz-table_scroll" style={{
                         ...scrollStyle,

@@ -98,7 +98,7 @@ export interface TableProps<T> {
   showHeader?: boolean;
   footer?: (currentPageData: Object[]) => React.ReactNode;
   title?: (currentPageData: Object[]) => React.ReactNode;
-  scroll?: { x?: boolean | number | string; y?: boolean | number | string };
+  scroll?: { x?: boolean | number | string; y?: boolean | number | string; onScroll?: (e?: React.UIEvent<HTMLDivElement>) => any };
   childrenColumnName?: string;
   bodyStyle?: React.CSSProperties;
   className?: string;

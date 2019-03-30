@@ -10,6 +10,7 @@ const ButtonTypes = ['primary', 'minor', 'danger'];
 export type ButtonType = (typeof ButtonTypes)[number];
 
 export interface BaseButtonProps {
+    size?: 'small' | 'large' | 'default',
     type?: ButtonType;
     className?: string;
     children?: React.ReactNode;
@@ -34,12 +35,15 @@ class Button extends Component<BaseButtonProps, any>{
             type = '',
             className = '',
             disabled = false,
+            size = 'default',
             ...rest
         } = this.props;
+
+        const cls = classNames('biz-button', { [`biz-button_${type}`]: type }, `biz-button_${size}`, className)
         return (
             <button
                 disabled={disabled}
-                className={classNames('ats-btn', { [`ats-btn__${type}`]: type }, className)}
+                className={cls}
                 style={cStyle}
                 onClick={this.handleClick}
                 {...rest}
