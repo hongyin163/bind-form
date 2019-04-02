@@ -7,11 +7,11 @@ import React, { Component } from 'react';
  */
 const ButtonTypes = ['primary', 'minor', 'danger'];
 
-export type ButtonType = (typeof ButtonTypes)[number];
+// export type ButtonType = (typeof ButtonTypes)[number];
 
 export interface BaseButtonProps {
     size?: 'small' | 'large' | 'default',
-    type?: ButtonType;
+    type?: 'primary' | 'minor' | 'danger';
     className?: string;
     children?: React.ReactNode;
     onClick?: (e) => any,
