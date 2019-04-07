@@ -141,8 +141,8 @@ class Table<T> extends Component<TableProps<T>, any> {
                     colSpan={col.colSpan || 1}
                     style={{
                         width: col.width || (col.fixed ? 100 : 'auto'),
-                        maxWidth: col.width || (col.fixed ? 100 : 'auto'),
-                        minWidth: col.width || (col.fixed ? 100 : 'auto'),
+                        // maxWidth: col.width || (col.fixed ? 100 : 'auto'),
+                        // minWidth: col.width || (col.fixed ? 100 : 'auto'),
                     }}
                     {...thProps}
                 >
@@ -156,7 +156,7 @@ class Table<T> extends Component<TableProps<T>, any> {
     public renderBody = (columns: Array<ColumnProps<T>>, dataSource: T[]) => {
         const me = this;
         const {
-            showHeader
+            showHeader,
         } = me.props;
         const {
             hoverRowIndex,
@@ -174,8 +174,8 @@ class Table<T> extends Component<TableProps<T>, any> {
                 if (!showHeader && i === 0) {
                     tdStyle = {
                         width: col.width || (col.fixed ? 100 : 'auto'),
-                        maxWidth: col.width || (col.fixed ? 100 : 'auto'),
-                        minWidth: col.width || (col.fixed ? 100 : 'auto'),
+                        // maxWidth: col.width || (col.fixed ? 100 : 'auto'),
+                        // minWidth: col.width || (col.fixed ? 100 : 'auto'),
                     }
                 }
                 return (

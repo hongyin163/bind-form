@@ -1,0 +1,35 @@
+.header {
+  width: 1024px;
+  height: 64px;
+  line-height: 64px;
+  margin: 0 auto;
+}
+.header__menu {
+  overflow: hidden;
+}
+.header__user {
+  float: right;
+}
+.header__menu-item {
+  display: inline-block;
+  height: 64px;
+  line-height: 64px;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 20px;
+}
+.header__menu-item a {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+}
+.header__menu-item--active,
+.header__menu-item:hover {
+  background: #fff;
+  cursor: pointer;
+  color: #333;
+}
+.header__menu-item--active a,
+.header__menu-item:hover a {
+  color: #333;
+}

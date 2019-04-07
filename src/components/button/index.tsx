@@ -5,9 +5,9 @@ import React, { Component } from 'react';
 /**
  * type ['primary','minor','danger']
  */
-const ButtonTypes = ['primary', 'minor', 'danger'];
+// const ButtonTypes = ['primary', 'minor', 'danger'];
 
-export type ButtonType = (typeof ButtonTypes)[number];
+export type ButtonType = 'primary' | 'minor' | 'danger';// (typeof ButtonTypes)[number];
 
 export interface BaseButtonProps {
     size?: 'small' | 'large' | 'default',
