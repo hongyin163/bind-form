@@ -10,6 +10,25 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "classnames": "^2.2.6"
+    "classnames": "^2.2.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-less": "^4.0.1",
+    "gulp-typescript": "^5.0.1",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "rimraf": "^2.6.3",
+    "style-loader": "^0.23.1",
+    "typescript": "^3.4.2"
   }
 }
