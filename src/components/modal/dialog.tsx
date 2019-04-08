@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 
 class Dialog extends Component<any> {
@@ -8,7 +8,7 @@ class Dialog extends Component<any> {
     componentWillUnmount() {
         document.removeEventListener('click', this.close);
     }
-    close = (e) => {
+    close = (e: any) => {
         const me = this;
         const {
             onClose = () => null,

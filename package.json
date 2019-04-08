@@ -10,9 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/react": "^16.8.12",
+    "async-validator": "^1.11.0",
     "classnames": "^2.2.6",
+    "core-js": "3",
+    "css-animation": "^1.5.0",
+    "rc-animate": "^2.6.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "warning": "^4.0.3",
     "webpack": "^4.29.6"
   },
   "devDependencies": {

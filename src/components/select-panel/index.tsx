@@ -69,7 +69,7 @@ class SelectPanel extends Component<ISelectPanelProps, ISelectPanelState>{
         const me = this;
         const {
             value,
-            renderValue,
+            renderValue = (value) => value,
             placeholder,
             renderInput,
         } = me.props;
@@ -104,7 +104,7 @@ class SelectPanel extends Component<ISelectPanelProps, ISelectPanelState>{
             </div>
         )
     }
-    private onClickInput = (e) => {
+    private onClickInput = () => {
         const me = this;
         me.setVisible(true);
     }
@@ -127,7 +127,7 @@ class SelectPanel extends Component<ISelectPanelProps, ISelectPanelState>{
         const me = this;
         const node = ReactDOM.findDOMNode(me.refs.input) as HTMLElement;
         const {
-            top, left, right, height, bottom, width,
+            left, bottom, width,
         } = node.getBoundingClientRect();
         return {
             top: bottom,

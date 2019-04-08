@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
 import TransitionEvents from 'css-animation/lib/Event';
 import raf from '../_util/raf';
@@ -7,9 +7,9 @@ let styleForPesudo: HTMLStyleElement | null;
 
 // Where el is the DOM element you'd like to test for visibility
 function isHidden(element: HTMLElement) {
-  if (process.env.NODE_ENV === 'test') {
-    return false;
-  }
+  // if (process.env.NODE_ENV === 'test') {
+  //   return false;
+  // }
   return !element || element.offsetParent === null;
 }
 

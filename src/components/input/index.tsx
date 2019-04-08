@@ -14,14 +14,14 @@ export interface InputProps
 
 class Input extends Component<InputProps, any> {
     public static defaultProps = {
-        onPressEnter: (e) => void 0,
+        onPressEnter: () => void 0,
     }
     public state = {}
     public focus() {
         const input = this.refs.input as HTMLInputElement;
         input.focus();
     }
-    public blur(){
+    public blur() {
         const input = this.refs.input as HTMLInputElement;
         input.blur();
     }
@@ -54,7 +54,7 @@ class Input extends Component<InputProps, any> {
     private onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const me = this;
         const {
-            onPressEnter,
+            onPressEnter = () => void 0,
         } = me.props;
         if (e.keyCode === 13) {
             onPressEnter(e);

@@ -5,7 +5,7 @@ interface BasicProps {
 }
 
 function generator({ prefixCls }) {
-    return class Basic extends Component<any> {
+    return class Basic extends Component<BasicProps> {
         static Header: typeof Basic;
         static Footer: typeof Basic;
         static Content: typeof Basic;

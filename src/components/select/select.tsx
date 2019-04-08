@@ -61,7 +61,7 @@ export default class Select extends Component<SelectPropsCustom, {}>{
         } = props;
         const currentValue = value || defaultValue;
         if (currentValue) {
-            React.Children.map(children, (child: React.ReactElement, i) => {
+            React.Children.map(children, (child: React.ReactElement) => {
                 if (currentValue == child.props.value) {
                     me.setState({
                         value: child.props.value,
@@ -77,7 +77,7 @@ export default class Select extends Component<SelectPropsCustom, {}>{
         }
     }
     // 点击选择
-    public handleSelected = (e) => {
+    public handleSelected = () => {
         const me = this;
         const {
             onClick = () => null,
@@ -107,7 +107,7 @@ export default class Select extends Component<SelectPropsCustom, {}>{
         const {
             children,
         } = this.props;
-        return React.Children.map(children, (child: React.ReactElement, i) => {
+        return React.Children.map(children as  React.ReactElement[], (child: React.ReactElement, i) => {
             return React.cloneElement(child, {
                 id: i,
                 onSelect: this.onOptionSelect,
@@ -179,7 +179,7 @@ export default class Select extends Component<SelectPropsCustom, {}>{
     public render() {
         const {
             className,
-            label = '',
+            // label = '',
             style = {},
         } = this.props;
         const { selected, checkedLabel } = this.state;

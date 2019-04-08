@@ -19,4 +19,13 @@ module.exports = {
     es(dir = '') {
         return resolve('es', dir);
     },
+    base(dir = '') {
+        return resolve(dir);
+    },
+    resolve(moduleName) {
+        return require.resolve(moduleName);
+    },
+    tsConfig() {
+        return resolve('tsconfig.json')
+    }
 };

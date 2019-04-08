@@ -1,8 +1,8 @@
-import { Checkbox } from 'biz-ui';
+import Checkbox from '../checkbox';
 import classNames from 'classnames';
 import React, { Component } from 'react';
 import Icon from '../icon';
-import { ColumnProps, TableProps } from './interface';
+import { ColumnProps, TableProps } from './types';
 
 
 class Table<T> extends Component<TableProps<T>, any> {
@@ -11,7 +11,7 @@ class Table<T> extends Component<TableProps<T>, any> {
         columns: [],
         scroll: {},
     }
-    constructor(props, context) {
+    constructor(props: TableProps<T>, context: any) {
         super(props, context);
         const me = this;
         me.state = {
@@ -20,21 +20,21 @@ class Table<T> extends Component<TableProps<T>, any> {
         }
     }
     componentWillReceiveProps(props) {
-        // const {
-        //     rowSelection: {
-        //         selectedRowKeys = [],
-        //     } = {},
-        // } = props;
-        // const selectRowMap = selectedRowKeys.reduce((pre, current, i) => {
-        //     return Object.assign(pre, {
-        //         current: true,
-        //     })
-        // }, {})
-        // this.setState({
-        //     selectedRowKeys: selectRowMap,
-        // })
+        const {
+            rowSelection: {
+                selectedRowKeys = [],
+            } = {},
+        } = props;
+        const selectRowMap = selectedRowKeys.reduce((pre, current, _i) => {
+            return Object.assign(pre, {
+                [current]: true,
+            })
+        }, {})
+        this.setState({
+            selectedRowKeys: selectRowMap,
+        })
     }
-    public getSelectKeys(records = []) {
+    public getSelectKeys(records: T[] = []) {
         const me = this;
         return records
             .map((p, i) => me.getRowKey(p, i));
@@ -42,7 +42,7 @@ class Table<T> extends Component<TableProps<T>, any> {
     public getSelectedRecord() {
         const me = this;
         const {
-            dataSource,
+            dataSource = [],
         } = me.props
         const {
             selectedRowKeys,
@@ -53,7 +53,7 @@ class Table<T> extends Component<TableProps<T>, any> {
     }
     public setRowSelected(key, selected) {
         const me = this;
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             me.setState((state) => {
                 const selectedRowKeys = state.selectedRowKeys;
                 if (!selected) {
@@ -71,10 +71,10 @@ class Table<T> extends Component<TableProps<T>, any> {
     public setAllRowSelected(allSelected: boolean) {
         const me = this;
         const {
-            dataSource,
+            dataSource = [],
         } = me.props
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             me.setState((state) => {
                 if (allSelected) {
                     state.selectedRowKeys = dataSource
@@ -132,7 +132,8 @@ class Table<T> extends Component<TableProps<T>, any> {
             }
             if (col.onHeaderCell) {
                 thProps.onClick = () => {
-                    col.onHeaderCell(col)
+                    if (col.onHeaderCell)
+                        col.onHeaderCell(col)
                 }
             }
             return (
@@ -162,7 +163,7 @@ class Table<T> extends Component<TableProps<T>, any> {
             hoverRowIndex,
         } = this.state;
         return dataSource.map((item, i) => {
-            const tds = columns.map((col, j) => {
+            const tds = columns.map((col) => {
                 let value;
                 if (col.render) {
                     value = col.render('', item, i);
@@ -201,7 +202,7 @@ class Table<T> extends Component<TableProps<T>, any> {
     public isFixed() {
         const me = this;
         const {
-            columns,
+            columns = [],
         } = me.props;
         return columns.some((col) => col.fixed === true);
     }
@@ -221,7 +222,7 @@ class Table<T> extends Component<TableProps<T>, any> {
             selectedRowKeys = {},
         } = me.state;
         const {
-            dataSource,
+            dataSource = [],
             rowKey,
             rowSelection,
         } = me.props;
@@ -239,8 +240,8 @@ class Table<T> extends Component<TableProps<T>, any> {
         const me = this;
         const {
             rowSelection: {
-                onChange,
-            },
+                onChange = () => void 0,
+            } = {},
         } = me.props;
         const checked = e.target ? e.target.checked : e;
         me.setAllRowSelected(checked)
@@ -254,8 +255,8 @@ class Table<T> extends Component<TableProps<T>, any> {
         const me = this;
         const {
             rowSelection: {
-                onChange,
-            },
+                onChange = () => void 0,
+            } = {},
         } = me.props;
         const checked = e.target ? e.target.checked : e;
         me.setRowSelected(key, checked)
@@ -265,11 +266,10 @@ class Table<T> extends Component<TableProps<T>, any> {
                 onChange(keys, records);
             });
     }
-    public getRowKey = (record, i) => {
+    public getRowKey = (record: T, i: number) => {
         const me = this;
         const {
-            rowSelection,
-            rowKey,
+            rowKey = '',
         } = me.props;
         if (typeof rowKey === "function") {
             return rowKey(record, i);
@@ -279,17 +279,16 @@ class Table<T> extends Component<TableProps<T>, any> {
     public appendSelectionCol(columns) {
         const me = this;
         const {
-
             selectedRowKeys = {},
         } = me.state;
 
         const {
-            rowSelection,
+            rowSelection = {},
         } = me.props;
         if (me.isRowSelection()) {
             const {
-                columnWidth,
-                columnTitle,
+                columnWidth = 'auto',
+                columnTitle = '',
                 fixed,
             } = rowSelection;
             const selectAll = me.isAllChecked();
@@ -303,7 +302,7 @@ class Table<T> extends Component<TableProps<T>, any> {
                     )
                 },
                 width: columnWidth || 40,
-                render(text, record, i) {
+                render(_text: any, record: T, i: number) {
                     const key = me.getRowKey(record, i);
 
                     return (
@@ -324,8 +323,8 @@ class Table<T> extends Component<TableProps<T>, any> {
     public renderFixedTable(fixed) {
         const me = this;
         const {
-            columns,
-            dataSource,
+            columns = [],
+            dataSource = [],
             showHeader = true,
         } = me.props;
         let cols = columns.filter(p => p.fixed === fixed);
@@ -387,16 +386,16 @@ class Table<T> extends Component<TableProps<T>, any> {
         })
         // console.log(tr.dataset.index);
     }
-    public onMouseOutRow = (e) => {
+    public onMouseOutRow = (_e) => {
         // console.log('onMouseOutRow');
         this.setState({
             hoverRowIndex: -1,
         })
     }
-    public buildFixedColums(columns = []) {
-        const fixedLeft = [];
-        const fixedRight = [];
-        const normal = [];
+    public buildFixedColums(columns: ColumnProps<T>[] = []) {
+        const fixedLeft: ColumnProps<T>[] = [];
+        const fixedRight: ColumnProps<T>[] = [];
+        const normal: ColumnProps<T>[] = [];
         columns.forEach((col) => {
             if (col.fixed === 'left') {
                 fixedLeft.push(col);
@@ -411,8 +410,8 @@ class Table<T> extends Component<TableProps<T>, any> {
     public renderTable() {
         const me = this;
         const {
-            columns,
-            dataSource,
+            columns = [],
+            dataSource = [],
             showHeader = true,
         } = me.props;
         const cols = me.buildFixedColums(columns);
@@ -461,8 +460,8 @@ class Table<T> extends Component<TableProps<T>, any> {
         const {
             className,
             scroll: {
-                onScroll,
-            },
+                onScroll = '',
+            } = {},
         } = me.props;
         const scrollStyle = me.getScrollStyle();
         const cls = classNames('biz-table', className)

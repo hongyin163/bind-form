@@ -1,34 +1,29 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": false,
-        "strictFunctionTypes":true,
-        "target":"es6",
-        "jsx": "react",
-        "allowJs":true,
-        "module":"esnext",
-        "moduleResolution": "node",
-        "baseUrl":".",
-        "paths": {
-        },
-        "allowSyntheticDefaultImports":true,
-        "lib": [
-            "es2016",
-            "dom",
-            "es5"
-        ]
+      "sourceMap": true,
+      "noImplicitAny": false,
+      "strictFunctionTypes":true,
+      "target":"es6",
+      "jsx": "react",
+      "allowJs":true,
+      "module":"esnext",
+      "moduleResolution": "node",
+      "baseUrl":".",
+      "declaration":false,
+      "noUnusedParameters": true,
+      "noUnusedLocals": true,
+      "strictNullChecks": true,
+      "paths": {
+      },      
+      "allowSyntheticDefaultImports":true,
+      "lib": [
+          "es2016",
+          "dom",
+          "es5"
+      ]
 
     },
-    "include": [
-        "./src/**/*",
-        "./packages/"
-    ],
-    "exclude": [
-        "build",
-        "static",
-        "cmd",
-        "config",
-        "server"
-    ]
-}
+    "include": ["src"],
+    "exclude": ["node_modules", "lib", "es"]
+  }
+  

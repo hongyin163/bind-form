@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
@@ -88,7 +87,7 @@ export default class Modal extends Component<ModalProps, any> {
         const me = this;
         const {
             maskClosable,
-            maskTransitionName,
+            // maskTransitionName,
             maskStyle = {},
             mask,
         } = me.props;
@@ -140,13 +139,11 @@ export default class Modal extends Component<ModalProps, any> {
     public renderFooter(): React.ReactNode {
         const me = this;
         const {
-            children,
             footer,
             cancelText = '取消',
             okText = '确定',
             okType,
             onOk,
-            onCancel,
             okButtonProps = {},
             cancelButtonProps = {},
         } = me.props;

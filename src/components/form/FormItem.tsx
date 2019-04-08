@@ -99,10 +99,10 @@ class FormItem extends Component<FormItemProps, any> {
         const {
             label,
             labelCol,
-            wrapperCol,
-            style,
-            validateStatus,
-            help,
+            // wrapperCol,
+            // style,
+            // validateStatus,
+            // help,
         } = me.props;
 
         if (!label) {
@@ -120,19 +120,16 @@ class FormItem extends Component<FormItemProps, any> {
     public render() {
         const me = this;
         const {
-            label,
-            labelCol,
             wrapperCol,
             style,
-            validateStatus,
-            help,
             className
         } = me.props;
         const wrapperCls = classnames('biz-form_content', me.getSizeCls({ span: wrapperCol }));
         return (
             <FormContext.Consumer>
                 {(context) => {
-                    return (<div className={classnames('biz-form_item',className?className:'')} >
+                    return (
+                    <div className={classnames('biz-form_item',className?className:'')} style={style} >
                         {me.renderLabel()}
                         <div className={wrapperCls}>
                             <div className="biz-form_control">

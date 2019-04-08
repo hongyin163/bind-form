@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { Component } from 'react'
 import Animate from 'rc-animate';
 import Icon from '../icon'
-import Input, { InputProps } from '../input';
+import Input from '../input';
 import TagWarpper from './TagWarpper';
 
 type valueType = any[];
@@ -12,7 +12,7 @@ interface IInputTagProps {
     onChange: (value: valueType) => any,
     valueField: string,
     textField: string,
-    onInputChange: (input: string) => any,
+    onInputChange: (input?: string) => any,
     onPressEnter?: (input: string) => object,
 
     onFocus?: () => any,
@@ -33,7 +33,7 @@ export default class InputTag extends Component<IInputTagProps, IInputTagState> 
         valueField: 'value',
         textField: 'text',
         onInputChange: (value) => value,
-        onChange: (value) => void 0,
+        onChange: () => void 0,
         onFocus: () => void 0,
         onBlur: () => void 0,
     }
@@ -84,7 +84,7 @@ export default class InputTag extends Component<IInputTagProps, IInputTagState> 
                         showProp={'data-visible'}
                         transitionName="rotate"
                     >
-                        <Icon key="1"  className="biz-input-tag_arrow" data-visible={isWarp} type="arrow-down" style={{
+                        <Icon key="1" className="biz-input-tag_arrow" data-visible={isWarp} type="arrow-down" style={{
                             transform: `rotate(${isWarp ? '180deg' : '0'})`,
                         }} />
                     </Animate>
@@ -170,7 +170,7 @@ export default class InputTag extends Component<IInputTagProps, IInputTagState> 
             onInputChange(me.state.input);
         })
     }
-    private onPressEnter = (e) => {
+    private onPressEnter = () => {
         const me = this;
         const {
             input,
@@ -248,17 +248,17 @@ export default class InputTag extends Component<IInputTagProps, IInputTagState> 
     private onFocus = () => {
         const me = this;
         const {
-            onFocus,
+            onFocus = () => void 0,
         } = me.props;
         console.log('onFocus');
         me.setIsWarp(true).then(() => {
             onFocus();
         })
     }
-    private onBlur = (e) => {
+    private onBlur = () => {
         const me = this;
         const {
-            onBlur,
+            onBlur = () => void 0,
         } = me.props;
         console.log('onBlur');
         me.setIsWarp(false).then(() => {
