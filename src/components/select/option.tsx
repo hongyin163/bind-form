@@ -13,7 +13,7 @@ export default class Option extends Component<OptionProp, {}> {
         e.nativeEvent.stopImmediatePropagation();
         e.stopPropagation();
         const {
-            onSelect,
+            onSelect = () => void 0,
         } = this.props;
         onSelect(this.props);
     }

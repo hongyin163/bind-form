@@ -27,7 +27,7 @@ class Radio extends Component<RadioProps, any> {
         const {
             checked,
             disabled,
-            className,
+            className='',
         } = this.props;
         const cls = classnames({
             'biz-radio': true,

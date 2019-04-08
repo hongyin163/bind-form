@@ -57,9 +57,9 @@ class Tabs extends Component<TabsProps, any> {
         let {
             activeKey,
         } = me.state;
-        const tabs = [];
-        const tabPanels = [];
-        React.Children.forEach(children, (child: React.ReactElement) => {
+        const tabs: React.ReactElement[] = [];
+        const tabPanels: React.ReactElement[] = [];
+        React.Children.forEach(children as React.ReactElement[], (child: React.ReactElement) => {
             if (!child || !child.key) {
                 return;
             }

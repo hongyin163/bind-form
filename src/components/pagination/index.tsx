@@ -12,11 +12,11 @@ class Pagination extends Component<PaginationProps, any> {
         super(props, context);
     }
     onSelect(e) {
-        const me = this;
-        const current = me.props.current;
+        // const me = this;
+        // const current = me.props.current;
         const target = e.target;
 
-        let currentNode = null;
+        let currentNode;
         const focus = document.getElementsByClassName('biz-pagination_item current');
 
         if (focus.length > 0) {
@@ -45,7 +45,7 @@ class Pagination extends Component<PaginationProps, any> {
             current = 1, total = 0, pageSize = 20,
         } = me.props;
         const totalPage = Math.ceil(total / pageSize);
-        const links = [];
+        const links: React.ReactElement[] = [];
 
         //页数小于5,
         if (totalPage <= 5) {
@@ -84,7 +84,7 @@ class Pagination extends Component<PaginationProps, any> {
         }
 
         //前面的导航按钮展示逻辑
-        const pre = [];
+        const pre: React.ReactElement[] = [];
         if (current > 3) {
             pre.push(
                 <li key={'<<'} className="biz-pagination_item first">
@@ -102,7 +102,7 @@ class Pagination extends Component<PaginationProps, any> {
         }
 
         //后面的导航按钮展示逻辑
-        const next = [];
+        const next: React.ReactElement[] = [];
         if (current < totalPage) {
             next.push(
                 <li key={'>' + (current + 1)} className="biz-pagination_item next">

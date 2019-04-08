@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TableProps, ColumnProps } from './interface';
+import { TableProps, ColumnProps } from './types';
 
 class Table<T> extends Component<TableProps<T>, any> {
     state = {}
@@ -15,7 +15,7 @@ class Table<T> extends Component<TableProps<T>, any> {
     }
     renderBody = (columns: Array<ColumnProps<T>>, dataSource: Array<T>) => {
         return dataSource.map((item, i) => {
-            let tds = columns.map((col, j) => {
+            let tds = columns.map((col) => {
                 return (
                     <td key={col.dataIndex}>
                         {col.dataIndex && item[col.dataIndex]}
@@ -28,13 +28,11 @@ class Table<T> extends Component<TableProps<T>, any> {
             )
         })
     }
-    renderFixedTable(){}
-    renderTable(){}
     render() {
         let me = this;
         let {
-            columns,
-            dataSource
+            columns = [],
+            dataSource = []
         } = me.props;
         return (
             <div className="biz-table">

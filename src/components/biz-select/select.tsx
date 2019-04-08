@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Icon } from 'biz-ui';
+import Icon  from '../icon';
 import classnames from 'classnames';
 import { SelectProps } from './interface';
 import Option from './option';
@@ -47,9 +47,9 @@ export default class BizSelect extends Component<SelectPropsCustom, {}>{
         const me = this;
         const {
             selected,
-        } = this.state;
+        } = me.state;
         return (
-            <div className="curtain" onClick={this.handleCloseSelect} style={{ display: selected ? 'none' : 'block' }}>
+            <div className="curtain" onClick={me.handleCloseSelect} style={{ display: selected ? 'none' : 'block' }}>
                 <div
                     className='biz-select-dropdown'
                     style={{ width, top, left }}
