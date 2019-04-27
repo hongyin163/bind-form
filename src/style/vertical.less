@@ -1,0 +1,37 @@
+
+
+@form-item-height: 34px;
+@form-item-label-pading: 0 10px;
+.vertical{
+    &.biz-form{
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        font-size: 0;
+    }
+    .biz-form{
+        &::before {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+            content: '';
+        }
+        &_item{
+            display: block;
+            margin: 10px 0;
+            overflow: hidden;
+            font-size: 12px;
+        }
+        &_label{
+            display: block;
+            padding: @form-item-label-pading;
+            height: @form-item-height;
+            line-height: @form-item-height;
+        }
+        &_content{
+            display: block;
+            line-height: @form-item-height;
+        }
+    }
+}

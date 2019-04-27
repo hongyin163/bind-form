@@ -1,0 +1,43 @@
+
+
+@form-item-height: 34px;
+@form-item-label-pading: 0 10px;
+.horizontal{
+    &.biz-form{
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        font-size: 0;
+    }
+    .biz-form{
+        &::before {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+            content: '';
+        }
+        &_item{
+            display: block;
+            font-size: 12px;
+            &::after{
+                content:".";
+                display:block;
+                clear:both;
+                height:0;
+                visibility:hidden
+            }
+        }
+        &_label{
+            display: inline-block;
+            padding: @form-item-label-pading;
+            line-height: @form-item-height;
+            vertical-align: middle;
+        }
+        &_content{
+            display: inline-block;
+            line-height: @form-item-height;
+            vertical-align: middle;
+        }
+    }
+}
