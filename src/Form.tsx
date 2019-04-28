@@ -14,7 +14,7 @@ const TimeCount = {
     },
     end() {
         const len = Date.now() - this.from;
-        // console.log(len);
+        console.warn(len);
     },
 }
 

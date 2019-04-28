@@ -20,7 +20,7 @@ class Form extends Component<FormProps, any> {
     onFieldChange(name, e) {
         const me = this;
         const {
-            onChange,
+            onChange = () => void 0,
         } = me.props;
         me.formData = Object.assign(me.formData, {
             [name]: e.target.value,
@@ -40,9 +40,9 @@ class Form extends Component<FormProps, any> {
             if (!child.props) {
                 return;
             }
-        
-            const { bind, children,onChange} = child.props;
-        
+
+            const { bind, children, onChange } = child.props;
+
             if (bind) {
                 child.props.value = value[bind];
                 if (!onChange) {
@@ -69,7 +69,7 @@ class Form extends Component<FormProps, any> {
             children,
             ...rest
         } = me.props;
-        const cls = classnames("form",className);
+        const cls = classnames("form", className);
         me.bindEvent(value, children);
         return (
             <form className={cls} {...rest}>

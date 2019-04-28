@@ -74,7 +74,7 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
         }
         return node.type;
     }
-    addNode(parent, name, node) {
+    addNode(parent, name) {
         const me = this;
         const id = `${parent}_${name}`;
         me.nodeArch[id] = {
@@ -171,7 +171,7 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
                     children
                 } = child.props;
 
-                let id = me.addNode(me.parent, name, child);
+                let id = me.addNode(me.parent, name);
                 let val = value[id] || me.getDefaultValue(id);
                 childs[i] = FormWraper(child, id, val, (id, value) => {
                     console.log('FormWraper', value);

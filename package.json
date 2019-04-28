@@ -2,9 +2,15 @@
   "name": "biz-ui",
   "version": "1.0.0",
   "description": "B端通用组件库",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "lib",
+    "es"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":""
   },
   "repository": {},
   "author": "",

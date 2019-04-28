@@ -26,8 +26,7 @@ function compileLess(es) {
     return function () {
         // rimraf.sync(distDir);
         return gulp.src([
-            paths.src('components/**/*.less'),
-            `!${paths.src('components/style/*/**/*')}`
+            paths.src('**/*.less'),
         ])
             .pipe(less({
                 relativeUrls: true,
@@ -43,10 +42,8 @@ function compileTs(es) {
     const distDir = es === true ? esDir : libDir;
     return function () {
         return gulp.src([
-            paths.src('components/**/*.ts'),
-            paths.src('components/**/*.tsx'),
-            paths.src('components/**/*.js'),
-            paths.src('components/**/*.jsx'),
+            paths.src('**/*.ts'),
+            paths.src('**/*.tsx'),
         ]).pipe(ts(tsConfig, {
             error(e) {
                 tsDefaultReporter.error(e);
@@ -84,8 +81,8 @@ gulp.task('compileEs', gulp.series([clear(true), compileLess(true), compileTs(tr
 
 gulp.task('compileLib', gulp.series([clear(false), compileEsToJs,syncCssFromEs]));
 
-gulp.task('defaultTask',gulp.series(['compileEs']));
-// gulp.task('defaultTask',gulp.series(['compileEs','compileLib']));
+// gulp.task('defaultTask',gulp.series(['compileEs']));
+gulp.task('defaultTask',gulp.series(['compileEs','compileLib']));
 
 // gulp.task('defaultTask', gulp.series(['compileLib']));
 
