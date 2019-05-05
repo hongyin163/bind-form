@@ -1,31 +1,27 @@
 import AsyncValidator from 'async-validator';
-// import { findDomNode } from 'react-dom';
 import classnames from 'classnames';
 import React, { Component } from 'react';
 import FormContext from './Context';
-import FormItem from './FormItem';
 import FormGroup from './FormGroup';
+import FormItem from './FormItem';
 import { FormProps } from './types';
+import { getFeildRules, getFieldName } from './util';
+import { VALUE_PROP_NAME } from './value-prop'
 
 const TimeCount = {
     from: 0,
     start() {
+        // console.timeEnd('update');
+        // console.('update');
         this.from = Date.now();
     },
     end() {
         const len = Date.now() - this.from;
-        console.warn(len);
+        // console.log(len+'ms');
+        // console.timeLog('update');
     },
 }
 
-const VALUE_PROP_NAME = {
-    'input': {
-        'text': 'value',
-        'checkbox': 'checked',
-        'radio': 'checked',
-    },
-    'select': 'value',
-}
 interface BizForm {
     validateFields?: (cb?: any) => void,
     validateFieldsAndScroll?: (cb?: any) => void,
@@ -34,10 +30,6 @@ interface BizForm {
 class Form extends Component<FormProps, any> implements BizForm {
     public static Item: typeof FormItem;
     public static Group: typeof FormGroup;
-    public static defaultProps = {
-        fieldNameProp: 'name',
-        rulesProp: 'rules',
-    }
     public static displayName = 'Form';
     // public static getDerivedStateFromProps(props, state) {
     //     // 受控
@@ -74,7 +66,7 @@ class Form extends Component<FormProps, any> implements BizForm {
     }
     public shouldComponentUpdate(nextProps) {
 
-        console.log(this.props.name,this.props.value,nextProps.vlaue);
+        // console.log(this.props.name,this.props.value,nextProps.vlaue);
         if (this.props.value === nextProps.vlaue) {
             return false;
         }
@@ -86,10 +78,10 @@ class Form extends Component<FormProps, any> implements BizForm {
             value,
         } = props;
         me.setState((state) => {
-            // state.formData.value = value;
-            state.formData = Object.assign({}, state.formData, {
-                value,
-            })
+            state.formData.value = value;
+            // state.formData = Object.assign({}, state.formData, {
+            //     value,
+            // })
             return state;
         })
     }
@@ -152,7 +144,7 @@ class Form extends Component<FormProps, any> implements BizForm {
     public updateValue(name, value, cb) {
         return this.setState((state) => {
             const formData = state.formData;
-            const val = formData.value;
+            const val = formData.value || {};
             val[name] = value;
             state.formData = Object.assign({}, formData, {
                 value: val,
@@ -218,11 +210,12 @@ class Form extends Component<FormProps, any> implements BizForm {
         } else {
             value = e;
         }
+        // console.log('onChange', fieldName);
         me.fieldMap[fieldName].props[valuePropName] = value;
         me.updateValue(fieldName, value, () => {
             onFieldChange(e);
             const allValues = me.state.formData.value;
-            debugger;
+            // debugger;
             onChange(allValues);
             me.validateFieldByName(fieldName, allValues[fieldName])
         })
@@ -256,10 +249,6 @@ class Form extends Component<FormProps, any> implements BizForm {
     }
     public bindEvent(value, childList) {
         const me = this;
-        const {
-            fieldNameProp = 'name',
-            rulesProp = 'rules',
-        } = me.props;
         if (!childList || React.Children.count(childList) === 0) {
             return;
         }
@@ -269,8 +258,8 @@ class Form extends Component<FormProps, any> implements BizForm {
             }
 
             const { children, onChange } = child.props;
-            const name = child.props[fieldNameProp] || child.props[`data-${fieldNameProp}`];
-            const rules = child.props[rulesProp] || child.props[`data-${rulesProp}`];
+            const name = getFieldName(child);
+            const rules = getFeildRules(child);
             const valuePropName = me.getValuePropName(child);
             if (name) {
                 me.fieldMap[name] = child;
@@ -331,7 +320,7 @@ class Form extends Component<FormProps, any> implements BizForm {
             onChange,
             ...rest
         } = me.props;
-        console.log(me.props.name, 'render');
+        // console.log(getFieldName(this), 'render');
         const cls = classnames("biz-form", layout, className);
         let childDren;
         if (me.isEnableDomCache()) {

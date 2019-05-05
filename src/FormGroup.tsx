@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
+import { fieldPropName, rulesPropName } from './constants';
 // import { util } from 'biz-lib';
+import { getFeildRules, getFieldName } from './util';
+
 import { IFormGroupProps } from './types';
 
 function FormWraper(Ele, id, value, onChange) {
-    debugger;
+    // debugger;
     Ele.props.value = value || {};
-    Ele.props.onChange = function (val) {
+    Ele.props.onChange = (val) => {
         onChange(id, val);
     }
     return Ele;
 }
 
-
 export default class FormGroup extends Component<IFormGroupProps, any> {
-    nodeArch: any;
-    parent: string;
-    root: any;
-    firstNode: any;
+    public nodeArch: any;
+    public parent: string;
+    public root: any;
+    public firstNode: any;
     constructor(props, context) {
         super(props, context);
         const me = this;
-        // const state = {};
-        // me.initState(props.value || {}, 'root', state);
-        // debugger;
+
         me.state = {
             value: {},
         };
@@ -32,12 +32,12 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
                 id: 'root',
                 name: 'root',
                 parent: null,
-            }
+            },
         };
         me.parent = 'root';
 
     }
-    shouldComponentUpdate() {
+    public shouldComponentUpdate() {
         if (!this.isControl()) {
             return false;
         }
@@ -58,15 +58,6 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
             return me.state.value;
         }
     }
-    initState(value, parent, state = {}) {
-        const me = this;
-
-        let children = me.getChildren(parent);
-        children.forEach((child) => {
-            state[child.id] = value[child.name];
-            me.initState(value, child.id, state);
-        })
-    }
     public getDisplayName(node: React.ReactElement) {
         if (typeof node.type === 'function') {
             const type = node.type as React.ComponentClass;
@@ -74,17 +65,17 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
         }
         return node.type;
     }
-    addNode(parent, name) {
+    public addNode(parent, name, node) {
         const me = this;
         const id = `${parent}_${name}`;
         me.nodeArch[id] = {
             id,
             name,
-            parent
+            parent,
         };
         return id;
     }
-    setValueBy = (id: string, value: any) => {
+    public setValueBy = (id: string, value: any) => {
         const me = this;
         // console.log('setValue');
         // console.log(id, value);
@@ -95,7 +86,7 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
             me.onFormChange();
         });
     }
-    getChildren = (parentId) => {
+    public getChildren = (parentId) => {
         const me = this;
         const nodeArch = me.nodeArch;
 
@@ -103,61 +94,60 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
             .filter(key => nodeArch[key].parent === parentId)
             .map((key) => nodeArch[key]);
     }
-    getDefaultValue = (id) => {
+    public getDefaultValue = (id) => {
         const me = this;
         const {
-            defaultValue = {}
+            defaultValue = {},
         } = me.props;
         const nodeArch = me.nodeArch;
-        let parent = id;
-        let names: any[] = [];
+        const parent = id;
+        const names: any[] = [];
         let node = nodeArch[parent];
-        debugger;
+        // debugger;
         while (node.parent !== 'root') {
             names.unshift(node.name)
             node = nodeArch[node.parent];
         }
         let value = defaultValue;
-        for (let i = 0; i < names.length; i++) {
-            let name = names[i];
+        for (const name of names) {
             if (value[name]) {
                 value = value[name];
             } else {
-                value = undefined;
+                value = {};
+                break;
             }
-
         }
         return value;
     }
-    buildNode = (parentNode, parentData) => {
+    public buildNode = (parentNode, parentData) => {
         const me = this;
         const {
             value,
         } = me.state;
 
-        let { id } = parentNode;
-        let children = me.getChildren(id);
+        const { id } = parentNode;
+        const children = me.getChildren(id);
 
         children.forEach((child) => {
             parentData[child.name] = value[child.id] || me.getDefaultValue(child.id);
             me.buildNode(child, parentData[child.name]);
         })
     }
-    onFormChange = () => {
+    public onFormChange = () => {
         const me = this;
         const {
             onChange = () => void 0,
         } = me.props;
-        let root = {
+        const root = {
             id: 'root',
             name: 'root',
             parent: null,
         }
-        let data = {};
+        const data = {};
         me.buildNode(root, data);
         onChange(data[me.firstNode]);
     }
-    renderSubForm = (value, childs: React.ReactElement[] = []) => {
+    public renderSubForm = (value, childs: React.ReactElement[] = []) => {
         const me = this;
         React.Children.forEach(childs, (child: React.ReactElement, i) => {
             // debugger;
@@ -166,27 +156,26 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
             }
 
             if (me.getDisplayName(child) === 'Form') {
-                let {
-                    name,
-                    children
+                const {
+                    children,
                 } = child.props;
-
-                let id = me.addNode(me.parent, name);
-                let val = value[id] || me.getDefaultValue(id);
-                childs[i] = FormWraper(child, id, val, (id, value) => {
-                    console.log('FormWraper', value);
-                    me.setValueBy(id, value);
+                const name = getFieldName(child);
+                const id = me.addNode(me.parent, name, child);
+                const val = value[id] || me.getDefaultValue(id);
+                childs[i] = FormWraper(child, id, val, (childId, childValue) => {
+                    // console.log('FormWraper', childValue);
+                    me.setValueBy(childId, childValue);
                 });
 
                 if (children) {
-                    let lastParent = me.parent;
+                    const lastParent = me.parent;
                     me.parent = id;
                     me.renderSubForm(value, children);
                     me.parent = lastParent;
                 }
             } else {
-                let {
-                    children
+                const {
+                    children,
                 } = child.props;
 
                 if (children) {
@@ -195,7 +184,7 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
             }
         });
     }
-    setFirstFormValue = (value, childs: React.ReactElement[] = []) => {
+    public setFirstFormValue = (value, childs: React.ReactElement[] = []) => {
         const me = this;
 
         if (!childs || childs.length === 0) {
@@ -213,7 +202,11 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
         childs[0].props.value = value;
         childs[0].props.onChange = onChange;
     }
-    setFirstFormName = (childs: React.ReactElement[] = []) => {
+    /**
+     * 检查根节点第一个form是否设置name或者data-name，如果没有设置
+     * 需要设置name属性
+     */
+    public setFirstFormName = (childs: React.ReactElement[] = []) => {
         const me = this;
 
         if (!childs || childs.length === 0) {
@@ -225,18 +218,20 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
         if (!childs[0].props) {
             childs[0].props = {}
         }
-        childs[0].props.name = childs[0].props.name || 'firstNode';
-        me.firstNode = childs[0].props.name;
+        const props = childs[0].props;
+        const fieldName = `data-${fieldPropName}`;
+        childs[0].props[fieldName] = props[fieldName] || props[fieldPropName] || 'firstNode';
+        me.firstNode = childs[0].props[fieldName];
     }
-    render() {
+    public render() {
         const me = this;
         const value = me.getValue();
-        console.log('FormGroup', value);
+        // console.log('FormGroup', value);
         const {
-            children = []
+            children = [],
         } = me.props;
 
-        let childs = React.Children.toArray(children);
+        const childs = React.Children.toArray(children);
         if (me.isControl()) {
             me.setFirstFormValue(value, childs as React.ReactElement[]);
             return childs;

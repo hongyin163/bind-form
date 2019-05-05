@@ -8,8 +8,6 @@ export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     className?: string;
     hideRequiredMark?: boolean;
     value?: object;
-    fieldNameProp?: string;
-    rulesProp?: string;
     onSubmit?: React.FormEventHandler<any>;
     onChange?: (value) => void;
     onFieldChange?: React.ChangeEventHandler<any>;
@@ -56,7 +54,6 @@ export interface ValidationRule {
     /** custom validate function (Note: callback must be called) */
     validator?: (rule: any, value: any, callback: any, source?: any, options?: any) => any;
 }
-
 
 export interface IFormGroupProps extends React.FormHTMLAttributes<HTMLFormElement> {
     value?: object;

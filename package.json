@@ -1,7 +1,7 @@
 {
-  "name": "biz-ui",
+  "name": "bind-form",
   "version": "1.0.0",
-  "description": "B端通用组件库",
+  "description": "表单组件",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":""
+    "build":"node ./build/gulpfile.js"
   },
   "repository": {},
   "author": "",

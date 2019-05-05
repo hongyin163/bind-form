@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import React, { Component } from 'react';
 import FormContext from './Context';
 import { FormItemProps } from './types';
+import { getFieldName } from './util';
 
 class FormItem extends Component<FormItemProps, any> {
     public static contextType = FormContext;
@@ -39,7 +40,8 @@ class FormItem extends Component<FormItemProps, any> {
             if (!child.props) {
                 continue;
             }
-            if ('data-bind' in child.props) {
+            const name = getFieldName(child);
+            if (name) {
                 // And means FIELD_DATA_PROP in child.props, too.
                 controls.push(child);
             } else if (child.props.children) {
@@ -59,8 +61,8 @@ class FormItem extends Component<FormItemProps, any> {
         if (!child || !child.props) {
             return '';
         }
-        const bind = child.props['data-bind'];
-        return bind;
+        const name = getFieldName(child);
+        return name;
     }
     public getHelpMessage = (context) => {
         if (!context) {
