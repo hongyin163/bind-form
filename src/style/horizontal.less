@@ -3,22 +3,23 @@
 @form-item-height: 34px;
 @form-item-label-pading: 0 10px;
 .horizontal{
-    &.biz-form{
+    &.bind-form{
         display: block;
         width: 100%;
         overflow: hidden;
         font-size: 0;
     }
-    .biz-form{
+    .bind-form{
         &::before {
             display: inline-block;
             width: 0;
             height: 100%;
-            vertical-align: middle;
+            vertical-align: top;
             content: '';
         }
         &_item{
             display: block;
+            margin: 5px 0;
             font-size: 12px;
             &::after{
                 content:".";
@@ -32,12 +33,12 @@
             display: inline-block;
             padding: @form-item-label-pading;
             line-height: @form-item-height;
-            vertical-align: middle;
+            vertical-align: top;
         }
         &_content{
             display: inline-block;
             line-height: @form-item-height;
-            vertical-align: middle;
+            vertical-align: top;
         }
     }
 }

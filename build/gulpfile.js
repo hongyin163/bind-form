@@ -10,8 +10,10 @@ const tsConfig = require('./getTsConfig')();
 const babelConfig = require('./getBabelConfig');
 // console.log(tsConfig)
 const tsDefaultReporter = ts.reporter.defaultReporter();
+// const nullReporter = ts.reporter.nullReporter();
 const esDir = paths.es();
 const libDir = paths.lib();
+const tmpDir = paths.tmp();
 
 function clear(es) {
     const distDir = es === true ? esDir : libDir;
@@ -26,7 +28,9 @@ function compileLess(es) {
     return function () {
         // rimraf.sync(distDir);
         return gulp.src([
-            paths.src('**/*.less'),
+            paths.src('*/style/index.less'),
+            paths.src('style/index.less'),
+            `!${paths.src('style/*/**/*')}`
         ])
             .pipe(less({
                 relativeUrls: true,
@@ -38,54 +42,72 @@ function compileLess(es) {
     };
 }
 
-function compileTs(es) {
+function compileTsToEs(es) {
     const distDir = es === true ? esDir : libDir;
+    // const modules = es === true ? false : 'commonjs';
     return function () {
         return gulp.src([
+            // paths.src('button/*.ts'),
+            // paths.src('button/*.tsx'),
             paths.src('**/*.ts'),
             paths.src('**/*.tsx'),
+            paths.src('**/*.js'),
+            paths.src('**/*.jsx'),
+            `!${paths.src('*/__test__')}`,
+            `!${paths.src('style/**/*')}`,
+            `!${paths.src('*/demo/**/*')}`,
+            `!${paths.src('node_modules/**/*')}`,
         ]).pipe(ts(tsConfig, {
             error(e) {
                 tsDefaultReporter.error(e);
                 // error = 1;
             },
             finish: tsDefaultReporter.finish,
-        })).pipe(gulp.dest(distDir));
+        }))
+            .pipe(gulp.dest(distDir))
     };
 }
 
-function compileEsToJs() {
-    return gulp.src([
-        paths.es('**/*.js'),
-    ])
-        .pipe(babel(babelConfig('commonjs')))
-        .pipe(gulp.dest(libDir));
+function compileEsToJs(es) {
+    const distDir = es === true ? esDir : libDir;
+    const modules = es === true ? false : 'commonjs';
+    return function () {
+        return gulp.src([
+            paths.base(`${distDir}/**/*.js`),
+        ])
+            .pipe(babel(babelConfig(modules)))
+            .pipe(gulp.dest(distDir));
+    }
 }
 
-function syncCssFromEs(){
-    return gulp.src([
-        paths.es('**/*.css'),
-    ])
-        .pipe(gulp.dest(libDir));
+
+function syncLess(es) {
+    const distDir = es === true ? esDir : libDir;
+    return function(){
+        return gulp.src([
+            paths.src('**/*.less'),
+        ]).pipe(gulp.dest(distDir));
+    }
 }
 
-gulp.task('compileLess', () => {
-    return compileLess();
-});
+function syncStaticFile(es) {
+    const distDir = es === true ? esDir : libDir;
+    return function () {
+        return gulp.src([
+            paths.src('**/*.@(png|jpg|jpeg|gif|svg)'),
+            paths.src('**/fonts/*'),
+        ])
+            .pipe(gulp.dest(distDir));
+    }
+}
 
-gulp.task('compileTs', () => {
-    return compileTs();
-});
 
-gulp.task('compileEs', gulp.series([clear(true), compileLess(true), compileTs(true)]));
+gulp.task('compileEs', gulp.series([clear(true), compileLess(true),syncLess(true), compileTsToEs(true), compileEsToJs(true), syncStaticFile(true)]));
 
-gulp.task('compileLib', gulp.series([clear(false), compileEsToJs,syncCssFromEs]));
+gulp.task('compileLib', gulp.series([clear(false), compileLess(false),syncLess(false), compileTsToEs(false), compileEsToJs(false), syncStaticFile(false)]));
 
-// gulp.task('defaultTask',gulp.series(['compileEs']));
-gulp.task('defaultTask',gulp.series(['compileEs','compileLib']));
 
-// gulp.task('defaultTask', gulp.series(['compileLib']));
+gulp.task('default', gulp.series(['compileEs', 'compileLib']));
 
-const defaulTask = gulp.task('defaultTask');
-defaulTask();
 
+// gulp.task('default', gulp.series([compileTsToEs(true), compileEsToJs(true)]));

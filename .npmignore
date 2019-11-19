@@ -12,3 +12,7 @@ package-lock.json
 *.ntvs*
 *.njsproj
 *.sln
+
+sample/
+build/
+src/

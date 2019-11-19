@@ -2,7 +2,7 @@ const path = require('path');
 const dirname = __dirname;
 
 function resolve(...args) {
-    console.log(args);
+    // console.log(args);
     return path.resolve(dirname, '..', ...args);
 }
 
@@ -18,6 +18,9 @@ module.exports = {
     },
     es(dir = '') {
         return resolve('es', dir);
+    },
+    tmp(dir = '') {
+        return resolve('tmp', dir);
     },
     base(dir = '') {
         return resolve(dir);

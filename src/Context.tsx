@@ -1,8 +1,6 @@
 import React from 'react';
 
 const FormContext = React.createContext({
-    fieldNameProp: 'name',
-    rulesProp: 'rules',
     value: {},
     validate: {
         isValidate: false,

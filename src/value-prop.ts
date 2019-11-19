@@ -5,4 +5,6 @@ export const VALUE_PROP_NAME = {
         'radio': 'checked',
     },
     'select': 'value',
+    'Checkbox':'checked',
+    'Radio':'checked',
 }

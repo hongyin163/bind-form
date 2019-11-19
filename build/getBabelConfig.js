@@ -2,6 +2,10 @@ const { resolve } = require('./paths');
 
 module.exports = function (modules) {
     const plugins = [
+        // '@babel/plugin-transform-runtime',
+        // '@babel/plugin-proposal-class-properties',
+        // '@babel/plugin-transform-async-to-generator',
+        // '@babel/plugin-transform-object-assign'
         // resolve('babel-plugin-inline-import-data-uri'),
         // resolve('@babel/plugin-transform-member-expression-literals'),
         // resolve('@babel/plugin-transform-object-assign'),
@@ -43,9 +47,14 @@ module.exports = function (modules) {
                             'Android >= 4',
                         ],
                     },
-                },
+                    useBuiltIns: false,
+                }
             ],
+            resolve('@babel/preset-react'),
         ],
         plugins,
+        ignore:[
+            '**/types.d.ts'
+        ]
     };
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { fieldPropName, rulesPropName } from './constants';
+import { fieldPropName } from './constants';
 // import { util } from 'biz-lib';
-import { getFeildRules, getFieldName } from './util';
+import { getFieldName } from './util';
 
 import { IFormGroupProps } from './types';
 
@@ -65,7 +65,7 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
         }
         return node.type;
     }
-    public addNode(parent, name, node) {
+    public addNode(parent, name) {
         const me = this;
         const id = `${parent}_${name}`;
         me.nodeArch[id] = {
@@ -160,7 +160,7 @@ export default class FormGroup extends Component<IFormGroupProps, any> {
                     children,
                 } = child.props;
                 const name = getFieldName(child);
-                const id = me.addNode(me.parent, name, child);
+                const id = me.addNode(me.parent, name);
                 const val = value[id] || me.getDefaultValue(id);
                 childs[i] = FormWraper(child, id, val, (childId, childValue) => {
                     // console.log('FormWraper', childValue);
