@@ -7,5 +7,3 @@ export function getFieldName(dom) {
 export function getFeildRules(dom) {
     return dom.props[`data-${rulesPropName}`] || dom.props[rulesPropName];
 }
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

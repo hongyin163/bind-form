@@ -1,5 +1,6 @@
 import React from 'react';
-import { Omit } from './util';
+import { Omit } from '../_util/type';
+
 export type FormLayout = 'horizontal' | 'inline' | 'vertical';
 
 export interface FormProps extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onChange'> {

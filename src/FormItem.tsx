@@ -11,6 +11,19 @@ class FormItem extends Component<FormItemProps, any> {
     constructor(props, context) {
         super(props, context);
     }
+    public getSizeCls({ span = 0, order = 0, offset = 0, push = 0, pull = 0 }) {
+        const prefixCls = 'biz-col';
+        const classes = classnames(
+            {
+                [`${prefixCls}-${span}`]: span !== undefined,
+                [`${prefixCls}-order-${order}`]: order,
+                [`${prefixCls}-offset-${offset}`]: offset,
+                [`${prefixCls}-push-${push}`]: push,
+                [`${prefixCls}-pull-${pull}`]: pull,
+            },
+        );
+        return classes;
+    }
     public getControls(children: React.ReactNode, recursively: boolean) {
         // debugger;
         let controls: Array<React.ReactElement<any>> = [];
@@ -96,7 +109,7 @@ class FormItem extends Component<FormItemProps, any> {
         if (!errors || errors.length <= 0) {
             if (help) {
                 return (
-                    <div className={'bind-form_explain'}>
+                    <div className={'biz-form_explain'}>
                         {help}
                     </div>
                 )
@@ -105,7 +118,7 @@ class FormItem extends Component<FormItemProps, any> {
         }
 
         return (
-            <div className={'bind-form_explain error'}>
+            <div className={'biz-form_explain error'}>
                 {errors.map(e => e.error).join(' ; ')}
             </div>
         )
@@ -114,6 +127,7 @@ class FormItem extends Component<FormItemProps, any> {
         const me = this;
         const {
             label,
+            labelCol,
             required,
         } = me.props;
 
@@ -121,7 +135,7 @@ class FormItem extends Component<FormItemProps, any> {
             return null;
         }
 
-        const labelCls = 'bind-form_label';
+        const labelCls = classnames('biz-form_label', me.getSizeCls({ span: labelCol }));
         return (
             <div className={labelCls}>
                 <label className={required ? 'required' : ''}>
@@ -134,24 +148,26 @@ class FormItem extends Component<FormItemProps, any> {
     public render() {
         const me = this;
         const {
+            wrapperCol,
             style,
             className,
             children,
         } = me.props;
+        const wrapperCls = classnames('biz-form_content', me.getSizeCls({ span: wrapperCol }));
         return (
             <FormContext.Consumer>
                 {(context) => {
                     const errors = me.getErrors(context);
                     return (
                         <div
-                            className={classnames('bind-form_item', className, {
-                                ['bind-form_item-error']: errors.length > 0,
+                            className={classnames('biz-form_item', className, {
+                                ['biz-form_item-error']: errors.length > 0,
                             })}
                             style={style as any}
                         >
                             {me.renderLabel()}
-                            <div className={'bind-form_content'}>
-                                <div className="bind-form_control">
+                            <div className={wrapperCls}>
+                                <div className="biz-form_control">
                                     {children}
                                 </div>
                                 {me.getHelpMessage(errors)}

@@ -1,6 +1,6 @@
 import AsyncValidator from 'async-validator';
 import classnames from 'classnames';
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import FormContext from './Context';
 import FormGroup from './FormGroup';
 import FormItem from './FormItem';
@@ -203,7 +203,7 @@ class Form extends Component<FormProps, any> implements BizForm {
         const me = this;
         me.validateFields((errors, values) => {
             if (errors) {
-                const fields = document.getElementsByClassName('bind-form_item-error');
+                const fields = document.getElementsByClassName('biz-form_item-error');
                 if (fields.length > 0) {
                     fields[0].scrollIntoView();
                 }
@@ -271,6 +271,7 @@ class Form extends Component<FormProps, any> implements BizForm {
     }
     public onFieldChange(fieldName, valuePropName, e) {
         const me = this;
+        console.log(arguments)
         TimeCount.start();
         const {
             onFieldChange = () => null,
@@ -327,7 +328,7 @@ class Form extends Component<FormProps, any> implements BizForm {
     public eachChild(children, visit) {
         const me = this;
         if (!children || React.Children.count(children) === 0) {
-            return;
+            return [];
         }
         React.Children.forEach(children, (child) => {
             if (!child || !child.props) {
@@ -340,6 +341,65 @@ class Form extends Component<FormProps, any> implements BizForm {
             visit(child as any);
             me.eachChild(child.props.children, visit);
         });
+    }
+    public buildElements = (children, visit) => {
+        const me = this;
+        return React.Children.map(children, function (child) {
+            if (!child) {
+                return null;
+            }
+
+            if (typeof child !== 'object') {
+                return child;
+            }
+
+            let cloneChild = [];
+            if (child.props && child.props.children) {
+                cloneChild = me.buildElements(child.props.children, visit);
+            }
+            let props;
+            const displayName = me.getDisplayName(child);
+            if (displayName === 'Form') {
+                props = child.props || {};
+            } else {
+                props = visit(child, child.props || {});
+            }
+            return React.createElement(child.type, props, ...cloneChild);
+        })
+    }
+    public convertProps = (value, children) => {
+        const me = this;
+        return me.buildElements(children, function (child, props = {}) {
+            const name = getFieldName(child);
+            if (!name) {
+                return;
+            }
+
+            const { onChange } = child.props;
+            if (me.isEnableDomCache()) {
+                me.addToFieldMap(name, child);
+            }
+            const rules = getFeildRules(child);
+            const valuePropName = me.getValuePropName(child);
+            const nextProps: any = { ...props };
+            nextProps[valuePropName] = value[name];
+            if (!onChange) {
+                // if (me.cache[name]) {
+                //     nextProps.onChange = me.cache[name];
+                // } else {
+                //     me.cache[name] = me.onFieldChange.bind(me, name, valuePropName);
+                //     nextProps.onChange = me.cache[name];
+                // }
+                me.cache[name] = me.onFieldChange.bind(me, name, valuePropName);
+                nextProps.onChange = me.cache[name];
+            }
+
+            if (rules) {
+                me.rules[name] = rules;
+                me.rulesEnable[name] = true;
+            }
+            return nextProps;
+        })
     }
     public bindEvent(value, children) {
         const me = this;
@@ -408,22 +468,26 @@ class Form extends Component<FormProps, any> implements BizForm {
             hideRequiredMark,
             ...rest
         } = me.props;
-        const cls = classnames('bind-form', layout, className);
+
+        // let ele = me.buildElements(children, function (child) {
+        //     console.log(child);
+        // });
+        // debugger;
+        // return ele;
+        const cls = classnames('biz-form', layout, className);
         let childDren;
         if (me.isEnableDomCache()) {
             if (!me.domCache) {
                 const childs = typeof children === 'function' ? children() : children;
                 me.rulesEnable = {};
-                me.bindEvent(value, childs);
-                me.domCache = childs;
+                me.domCache = me.convertProps(value, childs);;
             }
             childDren = me.domCache;
         } else {
             me.rulesEnable = {};
-            me.bindEvent(value, children);
+            childDren = me.convertProps(value, children);
             me.domCache = null;
             me.fieldMap = {};
-            childDren = children;
         }
         return (
             <FormContext.Provider value={state}>
