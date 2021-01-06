@@ -14,7 +14,7 @@
   "dependencies": {
     "@types/react": "^16.9.34",
     "async-validator": "^3.2.4",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "biz-ux": "^0.1.39",
     "classnames": "^2.2.6",
     "glamor": "^2.20.40",
